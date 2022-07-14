@@ -67,8 +67,8 @@ const Card = props => {
     //console.log("Card", props.item.personalPhoto);
 
     const editor = props.adminEdit
-        ? <div >
-            <Link className="btn btn-primary" to={{ pathname: '/editForm', person: props.item }} type="button">Редактировать</Link>
+        ? <div className="d-flex flex-column flex-shrink-0 justify-content-evenly ms-auto" style={{ marginLeft: "7px" }}>
+            <Link className="btn btn-primary" to={{ pathname: '/editForm', person: props.item }} type="button">Изменить</Link>
             <button className="btn btn-secondary btn-sm" onClick={() => DeletePerson(props.item, props.index)} type="button">Удалить</button>
         </div>
         : null
@@ -79,9 +79,10 @@ const Card = props => {
 
         <div className="col-md-12 col-xxl-10" style={divCardStyle}>
             <div className="card d-flex" id={props.item.personalId} style={cardStyle}>
-                <div className="card-body" style={cardBodyStyle}>
+                <div className="card-body d-flex" style={cardBodyStyle}>
                     <img className="float-start" src={"./photo/" + props.item.personalPhoto} style={photoStyle} />
                     <div>
+                        <div>
                         <h5 className="fw-bold" style={nameStyle}>{props.item.personalLastName + ' ' + props.item.personalName + ' ' +
                             props.item.personalMidName}</h5>
                         <h6 className="text-muted mb-2">{props.item.profession}</h6>
@@ -89,7 +90,7 @@ const Card = props => {
                             <a href={"#"} id={props.item.personalOtdelId} style={professionStyle}>{props.item.routeOtdels}</a>
                         </div>
                     </div>
-                    <div>
+                        <div>
                         <div className="d-flex align-items-center flex-wrap" style={workPhoneStyle}>
                             <svg className="bi bi-telephone-fill" xmlns="http://www.w3.org/2000/svg" width="1em" fill="currentColor" viewBox="0 0 16 16"
                                 style={svgStyle}>
@@ -112,9 +113,10 @@ const Card = props => {
                             </svg>
                             <h6 style={headerWorkPhoneStyle}>электронная почта</h6><a className="fw-bold" href={"mailto:" + props.item.personalEmail}>{props.item.personalEmail}</a>
                         </div>
+                        </div>
                     </div>
+                    {editor}
                 </div>
-                {editor }
             </div>
         </div>
     )

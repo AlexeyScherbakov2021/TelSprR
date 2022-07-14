@@ -25,7 +25,7 @@ namespace TelSprR
 
             services.AddControllersWithViews();
 
-            string conString = Configuration["ConnectionString:DefaultConnection"];
+            string conString = Configuration["ConnectionString:ConnectLocalMSSQL"];
             services.AddDbContext<PersonalNGKContext>(options => options.UseSqlServer(conString));
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IOtdelRepository, OtdelRepository>();

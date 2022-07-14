@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { Label } from 'reactstrap';
 import { DropzoneComponent } from './DropFile';
 
 
@@ -98,21 +99,26 @@ export class EditForm extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="col">
+                <div className="col" style={{ marginTop: "20px" }}>
                     <div className="justify-content-center">
                         <DropzoneComponent onCallBack={this.SelectPhoto} filePhoto={this.state.filePhoto} fileName={this.person.personalPhoto} />
-                        <input type="file" accept="image/" required onChange={this.BrowsePhoto} />
-
                     </div>
-                    <div className="justify-content-evenly">
-                        <button className="btn btn-secondary" onClick={this.DeletePhoto} type="button">Удалить</button>
+                    <div style={{ margin: "10px"} }>
+                        <input id="myID" className="d-none invisible" type="file"  accept="image/" required onChange={this.BrowsePhoto} />
+                        <label className="form-label btn btn-primary" htmlFor="myID" style={{ marginBottom: "0px" }}>
+                            Обзор...
+                        </label>
+                        <button className="btn btn-secondary" style={{marginLeft: "10px"}} onClick={this.DeletePhoto} type="button">Удалить</button>
                     </div>
 
                 </div>
             </div>
 
         );
+
     }
+
+    //className = "d-none invisible"
 
 
     //-----------------------------------------------------------------------------------------------
