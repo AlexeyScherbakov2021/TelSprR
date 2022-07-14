@@ -29,19 +29,20 @@ export class NavMenu extends Component {
     searchSubmit(e) {
         //console.log("searchSubmit", this.refs.searchText.value);
         this.props.callBackSearch(this.refs.searchText.value);
+        this.refs.searchText.value = '';
     }
 
 
-
+    //---------------------------------------------------------------------------------------
     render() {
 
         let admButton = this.props.adminEdit
             ? <ul className="navbar-nav ">
                 <NavItem>
-                    <NavLink tag={Link} to="/otdel">Отделы</NavLink>
+                    <NavLink tag={Link} to="/otdels">Отделы</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} to="/prof">Профессии</NavLink>
+                    <NavLink tag={Link} to="/profession">Профессии</NavLink>
                 </NavItem>
             </ul>
             : null;
@@ -57,7 +58,7 @@ export class NavMenu extends Component {
                 <NavbarToggler onClick={this.toggleNavbar} />
                 <Collapse className="navbar-collapse" isOpen={!this.state.collapsed} navbar>
                     {admButton}
-                    <input type="search" ref="searchText" autoComplete="on" placeholder="Поиск..." ></input>
+                    <input type="search" ref="searchText" placeholder="Поиск..." ></input>
                     <button onClick={this.searchSubmit}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-search">
                             <path fillRule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"></path>

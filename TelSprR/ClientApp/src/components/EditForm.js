@@ -133,9 +133,8 @@ export class EditForm extends Component {
 
         this.setState({ listOtdel: data });
     }
+
     //-----------------------------------------------------------------------------------------------
-
-
     async LoadProf() {
         const response = await fetch('prof');
         const data = await response.json();

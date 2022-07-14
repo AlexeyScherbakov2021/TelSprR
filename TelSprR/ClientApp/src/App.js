@@ -8,6 +8,7 @@ import { EditForm } from './components/EditForm';
 
 
 import './custom.css'
+import { Layout } from './components/Layout';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -17,36 +18,70 @@ export default class App extends Component {
 
         this.state = {
             adminEdit: true,
-            searchText: null
+            searchText: null,
+            curAlpha: null,
+            curOtdel: -1
+
         };
 
         this.onSetSearch = this.onSetSearch.bind(this);
+        this.clickOtdel = this.clickOtdel.bind(this);
+        this.clickAlpha = this.clickAlpha.bind(this);
     }
 
 
+    //-----------------------------------------------------------------------------------------------------------
     onSetSearch(searchText) {
-        this.setState({ searchText });
+        this.setState({
+            searchText,
+            curOtdel: -1,
+            curAlpha: null
+        });
+    }
+
+    //-----------------------------------------------------------------------------------------------------------
+    clickOtdel(e) {
+        //this.props.callBackSearch(null);
+        this.setState({
+            curOtdel: e.target.id,
+            curAlpha: null,
+            searchText: null
+        });
+    }
+
+    //-----------------------------------------------------------------------------------------------------------
+    clickAlpha(e) {
+        //this.props.callBackSearch(null);
+        this.setState({
+            curAlpha: e.target.id,
+            searchText: null
+        });
     }
 
 
+    //-----------------------------------------------------------------------------------------------------------
   render () {
       return (
           <div>
-              <NavMenu adminEdit={this.state.adminEdit} callBackSearch={this.onSetSearch} searchText={this.state.searchText} />
+              <NavMenu adminEdit={this.state.adminEdit} callBackSearch={this.onSetSearch} />
               <Route exact path="/">
-                  <Main adminEdit={this.state.adminEdit} searchText={this.state.searchText} callBackSearch={this.onSetSearch} />
+                  <Main adminEdit={this.state.adminEdit} callBackSearch={this.onSetSearch}
+                      callBackOtdel={this.clickOtdel} callBackAlpha={this.clickAlpha}
+                      searchText={this.state.searchText} curOtdel={this.state.curOtdel} curAlpha={this.state.curAlpha} />
               </Route>
 
-              <Route exact path='/otdel' component={EditOtdel} />
-              <Route exact path='/prof' component={EditProf} />
-              <Route exact path='/editForm' component={EditForm} />
+              <Route path='/profession'>
+                  <EditProf searchText={this.state.searchText} />
+              </Route>
+              <Route path='/otdels'>
+                  <EditOtdel searchText={this.state.searchText} />
+              </Route>
+                  
+
+              <Route path='/editForm' component={EditForm} />
           </div>
 
 
-    //  <Layout>
-    //    <Route exact path='/:search' component={Main} />
-    //    <Route exact path='/' component={Main} />
-    //  </Layout>
     );
   }
 }
