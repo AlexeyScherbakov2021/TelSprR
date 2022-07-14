@@ -24,5 +24,30 @@ namespace TelSprR.Controllers
             return profRepo.Prof.OrderBy(it => it.ProfName).ToArray();
         }
 
+        //---------------------------------------------------------------------------
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (profRepo.Delete(id))
+                return Ok();
+            else
+                return NotFound();
+        }
+
+
+        //--------------------------------------------------------------------------------------------------
+        [HttpPost]
+        public IActionResult Post(Prof item)
+        {
+            bool result; 
+
+            if (item.ProfId < 1)
+                result = profRepo.Create(item);
+            else
+                result = profRepo.Edit(item);
+
+            return result ? Ok() : NotFound();
+
+        }
     }
 }
