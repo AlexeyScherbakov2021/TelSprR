@@ -37,7 +37,7 @@ namespace TelSprR.Controllers
 
         //--------------------------------------------------------------------------------------------------
         [HttpPost]
-        public IActionResult Post(Prof item)
+        public int Post(Prof item)
         {
             bool result; 
 
@@ -46,7 +46,9 @@ namespace TelSprR.Controllers
             else
                 result = profRepo.Edit(item);
 
-            return result ? Ok() : NotFound();
+            //return result ? Ok() : NotFound();
+
+            return item.ProfId;
 
         }
     }

@@ -8,17 +8,33 @@ export class EditProf extends Component {
 
         this.state = {
             listProf: [],
+            listHeight: window.innerHeight - 160
         };
 
-        this.seletedItem = null;
+        this.currentItem = null;
         this.EditName = this.EditName.bind(this);
+        this.CreateName = this.CreateName.bind(this);
         this.Delete = this.Delete.bind(this);
         this.selectedItem = this.selectedItem.bind(this);
+        this.onResize = this.onResize.bind(this);
     }
 
     //-----------------------------------------------------------------------------------
     componentDidMount() {
+        window.addEventListener('resize', this.onResize)
         this.LoadProf();
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onResize)
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    onResize() {
+        this.setState({
+            listHeight: window.innerHeight - 160 
+        })
     }
 
 
@@ -31,66 +47,87 @@ export class EditProf extends Component {
 
 
     //-------------------------------------------------------------------------------------------------------------------
-    EditName(e, item) {
-        console.log("Edit", item);
+    CreateName(e) {
 
-        let result;
-        if (item == null) {
-            result = prompt("Наименование новой должности");
-        } else {
-            result = prompt("Переименовать должность", this.seletedItem.profName);
-        }
+        let result = prompt("Наименование новой должности");
 
         if (result == null) {
             return;
         }
 
-
-
         const newItem = {
-            profId: item ? item.profId : 0,
+            profId: 0,
             profName: result,
-            profOrder: item ? item.profOrder : 500
+            profOrder: 500,
         };
 
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", "prof", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const data = this.state.listProf;
+                newItem.profId = xhr.response;
+                //console.log("xhr.response", xhr.response);
+                //console.log("Item", newItem);
+                data.splice(0, 0, newItem);
+                //console.log("data", data);
+                this.setState({ listProf: data });
+            }
+        }.bind(this);
+        xhr.send(JSON.stringify(newItem));
 
-        console.log("Edit newItem", newItem);
+    }
 
 
-        fetch("prof", {
-            method: 'POST',
-            headers: {
-                //'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newItem)
-        })
-            //.then(response => response.json())
-            .then((stat) => {
-                console.log("response " + stat.status);
-            //    getItems();
-            //    addNameTextbox.value = '';
-            })
-            .catch(error => console.error('Unable to add item.', error));
+    //-------------------------------------------------------------------------------------------------------------------
+    EditName(e, item) {
+
+        if (item == null)
+            return;
+
+        let result = prompt("Переименовать должность " + item.profId + ' ' + item.profName + "?", item.profName);
+        if (result == null) {
+            return;
+        }
+
+        item.profName = result;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", "prof", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                //console.log("xhr", xhr);
+                const data = this.state.listProf;
+                this.setState({ listProf: data });
+            }
+        }.bind(this);
+        xhr.send(JSON.stringify(item));
 
     }
 
 
     //-------------------------------------------------------------------------------------------------------------------
     Delete(e) {
-        var result = window.confirm('Удалить "' + this.seletedItem.profId + ' ' + this.seletedItem.profName + "?" );
+
+        if (this.currentItem == null)
+            return;
+
+        var result = window.confirm('Удалить "' + this.currentItem.profId + ' ' + this.currentItem.profName + "?");
 
         if (result) {
             var xhr = new XMLHttpRequest();
-            xhr.open("delete", "prof/" + this.seletedItem.profId, true);
+            xhr.open("delete", "prof/" + this.currentItem.profId, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onload = function () {
-                //console.log("status = " + xhr.status);
                 if (xhr.status === 200) {
-                    //const data = { ...this.state.listProf };
-                    //delete data[index];
-                    //this.setState({ listProf: data });
-                    console.log("listProf", this.state.listProf);
+                    const data = this.state.listProf;
+                    const index = data.findIndex(e => e.profId === this.currentItem.profId);
+                    data.splice(index, 1);
+                    this.setState({ listProf: data });
+                } else {
+                    alert("Ошибка при удалении. Возможно должность используется.");
                 }
             }.bind(this);
             xhr.send();
@@ -101,19 +138,31 @@ export class EditProf extends Component {
     //-------------------------------------------------------------------------------------------------------------------
     selectedItem(item) {
         //console.log("selectedItem", item);
-        this.seletedItem = item;
+        this.currentItem = item;
     }
 
 
+    //-------------------------------------------------------------------------------------------------------------------
     render() {
+        const buttonStyle = {
+            margin: "5px"
+        };
 
+        const listStyle = {
+            height: this.state.listHeight
+        };
 
-        //console.log("render Prof", this.props.searchText);
+        //console.log("render Prof", this.state.listProf);
 
         return (
-            <div>
+            <div style={{ margin: "6px", marginLeft: "20px"} }>
                 <h3>Список должностей</h3>
-                <ul ref="profession" className="list-group border rounded overflow-auto" style={{ height: 500} }>
+                <div>
+                    <button className="btn btn-primary" onClick={this.CreateName} style={buttonStyle} >Создать</button>
+                    <button className="btn btn-primary" onClick={(e) => this.EditName(e, this.currentItem)} style={buttonStyle}>Изменить</button>
+                    <button className="btn btn-secondary" onClick={this.Delete} style={buttonStyle}>Удалить</button>
+                </div>
+                <ul ref="profession" className="list-group border rounded overflow-auto" style={listStyle }>
                     {
                         this.state.listProf.map((item) =>
                             <li key={item.profId} className="list-group-item">
@@ -124,11 +173,6 @@ export class EditProf extends Component {
 
                 )}
                 </ul>
-                <div>
-                    <button onClick={(e) => this.EditName(e, null)} >Создать</button>
-                    <button onClick={(e) => this.EditName(e, this.seletedItem)}>Изменить</button>
-                    <button onClick={this.Delete}>Удалить</button>
-                </div>
             </div>
         )
     }

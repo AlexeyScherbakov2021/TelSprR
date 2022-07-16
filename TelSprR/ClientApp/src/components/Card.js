@@ -84,7 +84,15 @@ const Card = props => {
                     <div>
                         <div>
                         <h5 className="fw-bold" style={nameStyle}>{props.item.personalLastName + ' ' + props.item.personalName + ' ' +
-                            props.item.personalMidName}</h5>
+                                props.item.personalMidName}
+                                {(props.item.personalDisabled == true) ?
+                                    <span className="badge rounded-pill bg-danger" style={{ marginLeft: "25px", marginTop: "5px" }} >
+                                        отключен
+                                    </span>
+                                    : null
+                                }
+
+                            </h5>
                         <h6 className="text-muted mb-2">{props.item.profession}</h6>
                         <div style={divProfessionStyle}>
                             <a href={"#"} id={props.item.personalOtdelId} style={professionStyle}>{props.item.routeOtdels}</a>

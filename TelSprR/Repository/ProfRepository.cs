@@ -14,7 +14,6 @@ namespace TelSprR.Repository
 
         public IQueryable<Prof> Prof => context.Prof;
 
-
         public bool Create(Prof item)
         {
             try
@@ -73,8 +72,5 @@ namespace TelSprR.Repository
 
             return false;
         }
-
-
-
     }
 }

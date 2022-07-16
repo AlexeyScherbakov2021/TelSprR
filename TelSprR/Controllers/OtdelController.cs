@@ -21,6 +21,7 @@ namespace TelSprR.Controllers
         }
 
 
+        //--------------------------------------------------------------------------------------------------
         [HttpGet]
         public IEnumerable<Otdel> Get()
         {
@@ -37,7 +38,9 @@ namespace TelSprR.Controllers
                         OtdelId = item.OtdelId,
                         OtdelName = item.OtdelName,
                         OtdelParentId = item.OtdelParentId,
+                        //OtdelParent = new Otdel()
                     };
+
                     if(item.SubOtdel.Count != 0)
                     {
                         foreach(var it in item.SubOtdel)
@@ -47,6 +50,7 @@ namespace TelSprR.Controllers
                                 OtdelId = it.OtdelId,
                                 OtdelName = it.OtdelName,
                                 OtdelParentId = it.OtdelParentId,
+                                //OtdelParent = it.OtdelParent
                             };
                             otdel.SubOtdel.Add(subOtdel);
 
@@ -58,6 +62,33 @@ namespace TelSprR.Controllers
             return newList.ToArray();
 
         }
+
+        //---------------------------------------------------------------------------
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (otdelRepo.Delete(id))
+                return Ok();
+            else
+                return NotFound();
+        }
+
+
+        //--------------------------------------------------------------------------------------------------
+        [HttpPost]
+        public int Post(Otdel item)
+        {
+            bool result;
+
+            if (item.OtdelId < 1)
+                result = otdelRepo.Create(item);
+            else
+                result = otdelRepo.Edit(item);
+
+            return item.OtdelId;
+
+        }
+
     }
 
 }

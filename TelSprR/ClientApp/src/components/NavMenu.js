@@ -42,7 +42,7 @@ export class NavMenu extends Component {
                     <NavLink tag={Link} to="/otdels">Отделы</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} to="/profession">Профессии</NavLink>
+                    <NavLink tag={Link} to="/profession">Должности</NavLink>
                 </NavItem>
             </ul>
             : null;

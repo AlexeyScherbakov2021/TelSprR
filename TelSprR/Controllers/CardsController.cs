@@ -133,53 +133,112 @@ namespace TelSprR.Controllers
         //    return Ok();
         //}
 
-
+    //-----------------------------------------------------------------------------------------------------
         [HttpGet]
-        [Route("Index")]
-        public IEnumerable<Card> Index(string search)
+        [Route("Admin")]
+        public IEnumerable<Card> Admin(int otdel, string alpha, string search, int page, int CardsPerPage = 5)
         {
             List<Personal> listPersonal;
+
+            //int PageSize = page * CardsPerPage;
 
             if (!string.IsNullOrEmpty(search))
             {
                 listPersonal = personRepo.Personal
-                    .Where(it => (it.PersonalLastName.Contains(search)
+                    .Where(it => it.PersonalLastName.Contains(search)
                              || it.PersonalName.Contains(search)
                              || it.PersonalMidName.Contains(search)
                              || it.PersonalTel.Contains(search)
                              || it.PersonalMobil.Contains(search))
-                     )
                     .Include(it => it.PersonalProf)
                     .Include(it => it.PersonalOtdel)
                     .OrderBy(it => it.PersonalLastName)
                     .ThenBy(it => it.PersonalName)
                     .ThenBy(it => it.PersonalMidName)
+                    .Skip((page - 1) * CardsPerPage)
+                    .Take(CardsPerPage)
                     .ToList();
 
             }
-            else 
-            { 
-                listPersonal = personRepo.Personal
-                    .Include(it => it.PersonalProf)
-                    .Include(it => it.PersonalOtdel)
-                    .OrderBy(it => it.PersonalLastName)
-                    .ThenBy(it => it.PersonalName)
-                    .ThenBy(it => it.PersonalMidName)
-                    .ToList();
-            }
 
+            else if (otdel < 0)
+                // выбран весь список
+                if (!string.IsNullOrEmpty(alpha))
+                {
+                    // выбрана буква
+                    listPersonal = personRepo.Personal
+                        .Where(it => it.PersonalLastName.Substring(0, 1) == alpha)
+                        .Include(it => it.PersonalProf)
+                        .Include(it => it.PersonalOtdel)
+                        .OrderBy(it => it.PersonalLastName)
+                        .ThenBy(it => it.PersonalName)
+                        .ThenBy(it => it.PersonalMidName)
+                        .Skip((page - 1) * CardsPerPage)
+                        .Take(CardsPerPage)
+                        .ToList();
+                }
+                else
+                {
+                    listPersonal = personRepo.Personal
+                            .Include(it => it.PersonalProf)
+                            .Include(it => it.PersonalOtdel)
+                            .OrderBy(it => it.PersonalLastName)
+                            .ThenBy(it => it.PersonalName)
+                            .ThenBy(it => it.PersonalMidName)
+                            .Skip((page - 1) * CardsPerPage)
+                            .Take(CardsPerPage)
+                            .ToList();
+                }
+            else
+            {
+                // выбран отдел
+                // получение списка подотделов
+                List<int> idOtdels = new List<int>();
+                idOtdels.Add(otdel);
+                GetSubOtdels(otdel, idOtdels);
+
+                if (!string.IsNullOrEmpty(alpha))
+                {
+                    // выбрана буква
+                    listPersonal = personRepo.Personal
+                        .Where(it => idOtdels.Contains(it.PersonalOtdelId.Value)
+                            && it.PersonalLastName.Substring(0, 1) == alpha)
+                        .Include(it => it.PersonalProf)
+                        .Include(it => it.PersonalOtdel)
+                        .OrderBy(it => it.PersonalLastName)
+                        .ThenBy(it => it.PersonalName)
+                        .ThenBy(it => it.PersonalMidName)
+                        .Skip((page - 1) * CardsPerPage)
+                        .Take(CardsPerPage)
+                        .ToList();
+                }
+                else
+                {
+                    listPersonal = personRepo.Personal
+                        .Where(it => idOtdels.Contains(it.PersonalOtdelId.Value))
+                        .Include(it => it.PersonalProf)
+                        .Include(it => it.PersonalOtdel)
+                        .Include(it => it.PersonalOtdel.OtdelParent)
+                        .OrderBy(it => it.PersonalLastName)
+                        .ThenBy(it => it.PersonalName)
+                        .ThenBy(it => it.PersonalMidName)
+                        .Skip((page - 1) * CardsPerPage)
+                        .Take(CardsPerPage)
+                        .ToList();
+                }
+            }
             return BuildCards(listPersonal);
 
         }
 
 
+        //-----------------------------------------------------------------------------------------------------
         [HttpGet]
         public IEnumerable<Card> Get(int otdel, string alpha, string search, int page, int CardsPerPage = 5)
         {
             List<Personal> listPersonal;
 
             //int PageSize = page * CardsPerPage;
-
 
             if (!string.IsNullOrEmpty(search))
             {

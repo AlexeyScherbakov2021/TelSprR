@@ -15,6 +15,7 @@ export class Cards extends Component {
 
         this.currentPage = 1;
         this.CardsPerPage = 6;
+        this.loadedPages = false;
 
         this.onScrollList = this.onScrollList.bind(this);
         this.LoadCardData = this.LoadCardData.bind(this);
@@ -25,22 +26,23 @@ export class Cards extends Component {
 
     //-----------------------------------------------------------------------------------
     componentDidMount() {
-        //window.addEventListener('scroll', this.onScrollList)
-        //window.addEventListener('resize', this.onScrollList)
+        window.addEventListener('scroll', this.onScrollList)
+        window.addEventListener('resize', this.onScrollList)
         this.LoadCardData(this.props.curOtdel, this.props.curAlpha, this.props.searchText, this.currentPage);
     }
 
 
     //-----------------------------------------------------------------------------------
     shouldComponentUpdate(nextProps, nextState) {
-        //console.log("shouldComponentUpdate", nextProps.searchText);
         if (nextProps.curOtdel !== this.props.curOtdel
             || nextProps.curAlpha !== this.props.curAlpha    
             || nextProps.searchText !== this.props.searchText    
-            || nextProps.currentPage !== this.props.currentPage    
+            //|| nextProps.currentPage !== this.props.currentPage    
         ) {
-
-             this.LoadCardData(nextProps.curOtdel, nextProps.curAlpha, nextProps.searchText, this.currentPage);
+            //console.log("shouldComponentUpdate");
+            this.currentPage = 1;
+            this.loadedPages = false;
+            this.LoadCardData(nextProps.curOtdel, nextProps.curAlpha, nextProps.searchText, this.currentPage);
         }
 
         return true;
@@ -49,24 +51,24 @@ export class Cards extends Component {
 
     //-----------------------------------------------------------------------------------
     componentWillUnmount() {
-    //    window.removeEventListener('scroll', this.onScrollList)
-    //    window.removeEventListener('resize', this.onScrollList)
+        window.removeEventListener('scroll', this.onScrollList)
+        window.removeEventListener('resize', this.onScrollList)
     }
 
     //-----------------------------------------------------------------------------------
     onScrollList(e) {
-        //const height = document.body.clientHeight;
-        //const screenHeight = window.innerHeight;
-        //const scrolled = window.scrollY;
+        const height = document.body.clientHeight;
+        const screenHeight = window.innerHeight;
+        const scrolled = window.scrollY;
 
-        //const threshold = height - screenHeight / 4;
-        //const position = scrolled + screenHeight;
+        const threshold = height - screenHeight / 4;
+        const position = scrolled + screenHeight;
 
-        //if (position >= threshold && !this.LoadedAll && !this.endPage) {
-        //    this.endPage = true;
-        //    this.currentPage++;
-        //    this.LoadCardDataPart(this.props.curOtdel, this.props.curAlpha, this.props.curSearch, this.currentPage);
-        //}
+        if (position >= threshold && !this.LoadedAll && !this.endPage) {
+            this.endPage = true;
+            this.currentPage++;
+            this.LoadCardData(this.props.curOtdel, this.props.curAlpha, this.props.curSearch, this.currentPage);
+        }
 
     }
 
@@ -85,13 +87,34 @@ export class Cards extends Component {
         if (page == null)
             page = 1;
 
-        //console.log('cards?otdel=' + selOtdel + '&alpha=' + selAlpha + '&search=' + search + '&page=' + page + '&CardsPerPage=' + this.CardsPerPage);
-        const response = await fetch('cards?otdel=' + selOtdel + '&alpha=' + selAlpha + '&search=' + search + '&page=' + page +
-            '&CardsPerPage=' + this.CardsPerPage);
-        const data = await response.json();
 
-        //this.listPerson = data;
-        this.setState({ listPerson: data });
+        let url = this.props.adminEdit ? "cards/admin" : "cards";
+
+
+        const response = await fetch(url + '?otdel=' + selOtdel + '&alpha=' + selAlpha + '&search=' + search + '&page=' + page +
+            '&CardsPerPage=' + this.CardsPerPage);
+        const dataResult = await response.json();
+
+        if (page > 1) {
+            if (this.loadedPages) {
+                return;
+            } else {
+                //console.log("подгрузка", dataResult);
+                if (dataResult.length == 0) {
+                    this.loadedPages = true;
+                    return;
+                }
+
+                let data = this.state.listPerson;
+                for (let d of dataResult)
+                    data.push(d);
+                this.setState({ listPerson: data });
+            }
+
+        } else {
+            this.setState({ listPerson: dataResult });
+        }
+
         this.endPage = false;
 
     }
