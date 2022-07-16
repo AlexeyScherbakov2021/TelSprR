@@ -1,0 +1,43 @@
+﻿.totop {
+    position: fixed;
+    right: 20px;
+    bottom: 70px;
+    width: 40px;
+    height: 40px;
+    border-color: transparent;
+    border-radius: 50%;
+    background-color: #0028e9;
+    cursor: pointer;
+}
+
+    .totop:hover,
+    .totop:focus {
+        filter: brightness(1.9);
+        outline: none;
+    }
+
+    .totop::before,
+    .totop::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .totop::before {
+        width: 5px;
+        height: 20px;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        background-color: #f5f0f6;
+    }
+
+    .totop::after {
+        width: 15px;
+        height: 15px;
+        transform: translate(-50%, -50%) rotate(45deg);
+        border-top: 5px solid #f5f0f6;
+        border-left: 5px solid #f5f0f6;
+    }
+

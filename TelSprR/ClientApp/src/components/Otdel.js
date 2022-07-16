@@ -39,7 +39,7 @@ export class Otdel extends Component {
             <li className={otdelId == this.props.currentOtdel
                 ? "list-group-item active border border-primary rounded-2 border-0 text-light"
                 : "list-group-item"}
-                id={otdelId} style={{ padding: 0 }} key={otdelId}>
+                id={otdelId} style={{ padding: 0 }} key={otdelId} >
 
                 <button id={otdelId} className={otdelId == this.props.currentOtdel ? "btn text-start text-light" : "btn text-start"}
                     type="button" style={{ margin: 1 }} >{otdelName}</button>

@@ -20,7 +20,7 @@ export class EditForm extends Component {
                 personalEmail: "",
                 personalTel: "",
                 personalMobil: "",
-                personalPhoto: "",
+                personalPhoto: null,
                 personalProfId: 0,
                 personalOtdelId: 0,
                 personalDisabled: false
@@ -135,8 +135,9 @@ export class EditForm extends Component {
     //--------------------------------------------------------------------------------------------------------
     SelectPhoto(file) {
 
+        this.person.personalPhoto = file.name
         this.setState({ filePhoto: file });
-        //console.log("SelectPhoto " + file);
+        console.log("SelectPhoto " + file);
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -144,10 +145,15 @@ export class EditForm extends Component {
 
         event.preventDefault();
 
+        let namePhoto;
+        if (this.person.personalPhoto != null) {
+            namePhoto = this.person.personalPhoto;
+        } else {
+            namePhoto = this.state.filePhoto == null ? null : this.state.filePhoto.name;
+        }
 
-        let namePhoto = this.state.filePhoto == null ? null : this.state.filePhoto.name;
 
-        //console.log(this.person);
+        console.log(namePhoto);
 
         let item = {
             personalId: this.person.personalId,
@@ -179,6 +185,7 @@ export class EditForm extends Component {
                 //this.setState({ drag: false });
                 //        //this.loadData();
                 this.props.history.push("/");
+                console.log("переход обратно");
             }
         }.bind(this);
         xhr.send(data);
@@ -220,7 +227,7 @@ export class EditForm extends Component {
                         <div className="card-body">
                             <form method="post" onSubmit={this.savePerson}>
                                 <div className="mb-3">
-                                    <input className="form-control" type="text" defaultValue={this.person.personalId} />
+                                    {/*<input className="form-control" type="text" defaultValue={this.person.personalId} />*/}
                                     <h6>Фамилия</h6>
                                     <input ref="lastName" id="name-2" className="form-control" type="text" defaultValue={this.person.personalLastName} />
                                     <h6>Имя</h6>

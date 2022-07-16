@@ -7,11 +7,10 @@ export class EditOtdel extends Component {
 
         this.state = {
             listOtdel: [],
+            currentItem: null,
             listHeight: window.innerHeight - 160
 
         };
-
-        this.currentItem = null;
 
         this.funOtdels = this.funOtdels.bind(this);
         this.onResize = this.onResize.bind(this);
@@ -52,7 +51,8 @@ export class EditOtdel extends Component {
     //-------------------------------------------------------------------------------------------------------------------
     selectedItem(item) {
         //console.log("selectedItem", item);
-        this.currentItem = item;
+        this.setState({ currentItem : item});
+        //this.currentItem = item;
     }
 
     //-------------------------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ export class EditOtdel extends Component {
 
         //console.log("currentItem", this.currentItem);
         // console.log("isSubOtdel" , this.refs.isSubOtdel.checked);
-        if (this.currentItem == null ) {
+        if (this.state.currentItem == null ) {
             if (this.refs.isSubOtdel.checked) {
                 return;
             } 
@@ -77,7 +77,7 @@ export class EditOtdel extends Component {
         const newItem = {
             otdelId: 0,
             otdelName: result,
-            otdelParentId: this.refs.isSubOtdel.checked ? this.currentItem.otdelId : null,
+            otdelParentId: this.refs.isSubOtdel.checked ? this.state.currentItem.otdelId : null,
             //otdelParent: this.currentItem
         };
 
@@ -89,7 +89,7 @@ export class EditOtdel extends Component {
                 const data = this.state.listOtdel;
                 newItem.otdelId = xhr.response;
                 this.refs.isSubOtdel.checked
-                    ? this.currentItem.subOtdel.splice(0, 0, newItem)
+                    ? this.state.currentItem.subOtdel.splice(0, 0, newItem)
                     : data.splice(0, 0, newItem);
                 //data.splice(0, 0, newItem);
                 this.setState({ listOtdel: data });
@@ -132,16 +132,16 @@ export class EditOtdel extends Component {
     //-------------------------------------------------------------------------------------------------------------------
     Delete(e) {
 
-        if (this.currentItem == null)
+        if (this.state.currentItem == null)
             return;
 
         //console.log("item", this.currentItem);
 
-        var result = window.confirm('Удалить "' + this.currentItem.otdelId + ' ' + this.currentItem.otdelName + "?");
+        var result = window.confirm('Удалить "' + this.state.currentItem.otdelId + ' ' + this.state.currentItem.otdelName + "?");
 
         if (result) {
             var xhr = new XMLHttpRequest();
-            xhr.open("delete", "otdel/" + this.currentItem.otdelId, true);
+            xhr.open("delete", "otdel/" + this.state.currentItem.otdelId, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onload = function () {
                 //console.log("status = " + xhr.status);
@@ -151,7 +151,7 @@ export class EditOtdel extends Component {
                     //const index = this.currentItem.subOtdel.findIndex(e => e.otdelId === this.currentItem.otdelId);
                     //console.log("index", index);
 
-                    this.deleteFromOtdel(data, this.currentItem.otdelId, this.currentItem.otdelParentId);
+                    this.deleteFromOtdel(data, this.state.currentItem.otdelId, this.state.currentItem.otdelParentId);
 
                     //this.currentItem.subOtdel.splice(index, 1);
                     //delete data[index];
@@ -190,12 +190,17 @@ export class EditOtdel extends Component {
     funOtdels(data) {
         const { otdelName, subOtdel, otdelId } = data;
 
+        //console.log("currentOtdel", this.state.currentItem);
+
         return (
 
-            <li className="list-group-item"
-                id={otdelId} style={{ padding: 0 }} key={otdelId}>
+            <li 
+                className={otdelId == this.state.currentItem?.otdelId
+                    ? "list-group-item active border border-primary rounded-2 border-0 text-light"
+                    : "list-group-item"} 
+                    id={otdelId} style={{ padding: 0 }} key={otdelId}>
 
-                <button id={otdelId} className={otdelId == this.props.currentOtdel ? "btn text-start text-light" : "btn text-start"}
+                <button id={otdelId} className={otdelId == this.state.currentItem?.otdelId ? "btn text-start text-light" : "btn text-start"}
                     onClick={() => this.selectedItem(data)}
                     type="button" style={{ margin: 1 }} >{otdelId}&nbsp;&nbsp;&nbsp;{otdelName}</button>
                 {
@@ -226,7 +231,7 @@ export class EditOtdel extends Component {
             <div style={{ margin: "6px", marginLeft: "20px" }}>
                 <h3>Список отделов</h3>
                 <div className="d-flex align-items-center">
-                    <button className="btn btn-primary" onClick={(e) => this.EditName(e, this.currentItem)} style={buttonStyle}>Изменить</button>
+                    <button className="btn btn-primary" onClick={(e) => this.EditName(e, this.state.currentItem)} style={buttonStyle}>Изменить</button>
                     <button className="btn btn-secondary" onClick={this.Delete} style={buttonStyle}>Удалить</button>
                     <button className="btn btn-primary" onClick={this.CreateName} style={buttonStyle} >Создать</button>
                     <div className="form-check" style={{ marginLeft: "8px" }}>

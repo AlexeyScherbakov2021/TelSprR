@@ -19,6 +19,7 @@ export class Cards extends Component {
 
         this.onScrollList = this.onScrollList.bind(this);
         this.LoadCardData = this.LoadCardData.bind(this);
+        this.DeletePerson = this.DeletePerson.bind(this);
 
 
     }
@@ -121,6 +122,32 @@ export class Cards extends Component {
 
 
     //-----------------------------------------------------------------------------------
+    DeletePerson(person) {
+
+        console.log("DeletePerson " + person.personalId);
+
+        var result = window.confirm('Удалить "' + person.personalLastName + ' ' + person.personalName + ' ' + person.personalMidName + '"');
+
+        if (result) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("delete", "cards/" + person.personalId, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = function () {
+                console.log("status = " + xhr.status);
+                if (xhr.status === 200) {
+                    const listPerson = this.state.listPerson;
+                    const index = listPerson.findIndex(e => e.personalId === person.personalId);
+
+                    listPerson.splice(index, 1);
+                    //delete data[index];
+                    this.setState({ listPerson });
+                }
+            }.bind(this);
+            xhr.send();
+        }
+    }
+
+    //-----------------------------------------------------------------------------------
 
     render() {
 
@@ -128,7 +155,8 @@ export class Cards extends Component {
             <>
                 {this.props.adminEdit ? <Link className="btn btn-primary" type="button" to='/editForm'
                     style={{ margin: "9px" }}>Создать</Link> : null}
-                {this.state.listPerson.map((item, index) => <Card key={index} adminEdit={this.props.adminEdit} item={item} />)}
+                {this.state.listPerson.map((item, index) => <Card key={index} adminEdit={this.props.adminEdit} item={item}
+                    callBackDelete={this.DeletePerson } />)}
             </>
         );
     }

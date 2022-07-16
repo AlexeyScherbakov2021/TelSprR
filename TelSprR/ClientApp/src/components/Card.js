@@ -69,7 +69,7 @@ const Card = props => {
     const editor = props.adminEdit
         ? <div className="d-flex flex-column flex-shrink-0 justify-content-evenly ms-auto" style={{ marginLeft: "7px" }}>
             <Link className="btn btn-primary" to={{ pathname: '/editForm', person: props.item }} type="button">Изменить</Link>
-            <button className="btn btn-secondary btn-sm" onClick={() => DeletePerson(props.item, props.index)} type="button">Удалить</button>
+            <button className="btn btn-secondary btn-sm" onClick={() => props.callBackDelete(props.item)} type="button">Удалить</button>
         </div>
         : null
 
@@ -132,27 +132,28 @@ const Card = props => {
 }
 
 //-----------------------------------------------------------------------------------
-function DeletePerson(person, index) {
+//function DeletePerson(person, index) {
 
-    console.log("DeletePerson " + person.personalId);
+//    console.log("DeletePerson " + person.personalId);
 
-    var result = window.confirm('Удалить "' + person.personalLastName + ' ' + person.personalName + ' ' + person.personalMidName + '"');
+//    var result = window.confirm('Удалить "' + person.personalLastName + ' ' + person.personalName + ' ' + person.personalMidName + '"');
 
-    if (result) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("delete", "cards/" + person.personalId, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = function () {
-            console.log("status = " + xhr.status);
-            if (xhr.status === 200) {
-                const data = { ...this.state.listPerson };
-                delete data[index];
-                this.setState({ listPerson: data });
-            }
-        }.bind(this);
-        xhr.send();
-    }
-}
+//    if (result) {
+//        var xhr = new XMLHttpRequest();
+//        xhr.open("delete", "cards/" + person.personalId, true);
+//        xhr.setRequestHeader("Content-Type", "application/json");
+//        xhr.onload = function () {
+//            console.log("status = " + xhr.status);
+//            if (xhr.status === 200) {
+//                const data = this.state.listPerson;
+//                data.splice(index, 1);
+//                //delete data[index];
+//                this.setState({ listPerson: data });
+//            }
+//        }.bind(this);
+//        xhr.send();
+//    }
+//}
 
 
 

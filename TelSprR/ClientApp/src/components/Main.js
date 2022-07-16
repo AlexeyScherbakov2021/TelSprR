@@ -2,6 +2,7 @@
 import { Otdel } from './Otdel';
 import { Alpha } from './Alpha';
 import { Cards } from './Cards';
+import { ToTop } from './ToTop'
 
 export class Main extends Component {
     static displayName = Main.name;
@@ -52,7 +53,7 @@ export class Main extends Component {
                         <Cards curAlpha={this.props.curAlpha} curOtdel={this.props.curOtdel} searchText={this.props.searchText}
                             adminEdit={this.props.adminEdit} />
                 </div>
-                {/*<ToTop scrollWin={this.myRef} />*/}
+                <ToTop scrollWin={this.myRef} />
             </div>
 
             </div>
