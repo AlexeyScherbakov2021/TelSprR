@@ -10,8 +10,8 @@ export class EditForm extends Component {
     constructor(props) {
         super(props);
 
-        this.person = this.props.location.person;
-        if (this.person == null) {
+        //this.person = this.props.location.person;
+        //if (this.person == null) {
             this.person = {
                 personalId: 0,
                 personalName: "",
@@ -26,7 +26,7 @@ export class EditForm extends Component {
                 personalDisabled: false
             }
 
-        }
+        //}
 
 
         this.state = {
@@ -218,7 +218,7 @@ export class EditForm extends Component {
     render() {
 
         //console.log("profession = " + this.person.personalProfId);
-        //console.log("otdel = " + this.state.filePhoto);
+        console.log("props = " + this.props.person);
 
         return (
             <div className="row justify-content-center">

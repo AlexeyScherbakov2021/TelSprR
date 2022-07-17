@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+import { Route, Routes } from 'react-router';
 import { Main } from './components/Main';
 import { EditOtdel } from './components/Admin/EditOtdel';
 import { EditProf } from './components/Admin/EditProf';
 import { NavMenu } from './components/NavMenu';
 import { EditForm } from './components/EditForm';
+import Login from './components/Admin/Login';
 
 
 import './custom.css'
@@ -17,7 +18,7 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            adminEdit: true,
+            adminEdit: false,
             searchText: null,
             curAlpha: null,
             curOtdel: -1
@@ -27,8 +28,14 @@ export default class App extends Component {
         this.onSetSearch = this.onSetSearch.bind(this);
         this.clickOtdel = this.clickOtdel.bind(this);
         this.clickAlpha = this.clickAlpha.bind(this);
+        this.onSetAdmin = this.onSetAdmin.bind(this);
     }
 
+
+    onSetAdmin() {
+        console.log("onSetAdmin");
+        this.setState({ adminEdit: true });
+    }
 
     //-----------------------------------------------------------------------------------------------------------
     onSetSearch(searchText) {
@@ -60,25 +67,31 @@ export default class App extends Component {
 
 
     //-----------------------------------------------------------------------------------------------------------
-  render () {
+    render() {
+
+        //console.log("adminEdit", this.state.adminEdit);
+
+        //console.log("App props", this.props);
+
       return (
           <div>
               <NavMenu adminEdit={this.state.adminEdit} callBackSearch={this.onSetSearch} />
-              <Route exact path="/">
-                  <Main adminEdit={this.state.adminEdit} callBackSearch={this.onSetSearch}
+              <Routes>
+                  <Route exact path="/" element={
+                      <Main adminEdit={this.state.adminEdit} callBackSearch={this.onSetSearch}
                       callBackOtdel={this.clickOtdel} callBackAlpha={this.clickAlpha}
-                      searchText={this.state.searchText} curOtdel={this.state.curOtdel} curAlpha={this.state.curAlpha} />
-              </Route>
+                          searchText={this.state.searchText} curOtdel={this.state.curOtdel} curAlpha={this.state.curAlpha} />
+                  } />
 
-              <Route path='/profession'>
-                  <EditProf searchText={this.state.searchText} />
-              </Route>
-              <Route path='/otdels'>
-                  <EditOtdel searchText={this.state.searchText} />
-              </Route>
-                  
+                  <Route path='/profession' element={<EditProf searchText={this.state.searchText} />} />
+                  <Route path='/otdels' element={<EditOtdel searchText={this.state.searchText} /> } />
+                      
+                  <Route path='/editForm' element={<EditForm  />} />
 
-              <Route path='/editForm' component={EditForm} />
+
+                  <Route path="/login" element={<Login callBackAdm={this.onSetAdmin} />} />
+              </Routes>
+
           </div>
 
 
@@ -86,6 +99,10 @@ export default class App extends Component {
   }
 }
 
-{/*  <Route path='/counter' component={Counter} />*/ }
-{/*  <Route path='/fetch-data' component={FetchData} />*/ }
+
+
+
+{/*<Route path='/login' >*/ }
+{/*    <Login callBackAdm={this.onSetAdmin} />*/ }
+{/*</Route>*/ }
 

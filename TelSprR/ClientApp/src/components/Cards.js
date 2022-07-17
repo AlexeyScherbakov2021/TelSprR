@@ -124,7 +124,7 @@ export class Cards extends Component {
     //-----------------------------------------------------------------------------------
     DeletePerson(person) {
 
-        console.log("DeletePerson " + person.personalId);
+        //console.log("DeletePerson " + person.personalId);
 
         var result = window.confirm('Удалить "' + person.personalLastName + ' ' + person.personalName + ' ' + person.personalMidName + '"');
 
@@ -133,7 +133,7 @@ export class Cards extends Component {
             xhr.open("delete", "cards/" + person.personalId, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onload = function () {
-                console.log("status = " + xhr.status);
+                //console.log("status = " + xhr.status);
                 if (xhr.status === 200) {
                     const listPerson = this.state.listPerson;
                     const index = listPerson.findIndex(e => e.personalId === person.personalId);
