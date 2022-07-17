@@ -16,8 +16,6 @@ export class NavMenu extends Component {
       };
 
       this.searchSubmit = this.searchSubmit.bind(this);
-
-      //this.refSearch = React.createRef();
   }
 
   toggleNavbar () {
@@ -48,7 +46,7 @@ export class NavMenu extends Component {
             </ul>
             : null;
 
-        //console.log("Nav", this.props.searchText);
+        console.log("Nav", this.num);
 
 
     return (
@@ -67,7 +65,7 @@ export class NavMenu extends Component {
                         </svg>
                     </button>
                 </Collapse>
-                <NavLink tag={Link} to="/login">#</NavLink>
+                <NavLink tag={Link} to='/login' >#</NavLink>
             </div>
         </Navbar>
     );

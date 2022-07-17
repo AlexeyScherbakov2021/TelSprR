@@ -2,6 +2,7 @@
 import Card from './Card';
 import { Link } from 'react-router-dom';
 
+
 export class Cards extends Component {
     static displayName = Cards.name;
 
@@ -156,7 +157,9 @@ export class Cards extends Component {
                 {this.props.adminEdit ? <Link className="btn btn-primary" type="button" to='/editForm'
                     style={{ margin: "9px" }}>Создать</Link> : null}
                 {this.state.listPerson.map((item, index) => <Card key={index} adminEdit={this.props.adminEdit} item={item}
-                    callBackDelete={this.DeletePerson } />)}
+                    callBackDelete={this.DeletePerson} />)}
+
+
             </>
         );
     }

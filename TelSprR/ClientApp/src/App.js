@@ -18,7 +18,7 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            adminEdit: false,
+            adminEdit: true,
             searchText: null,
             curAlpha: null,
             curOtdel: -1
@@ -86,8 +86,7 @@ export default class App extends Component {
                   <Route path='/profession' element={<EditProf searchText={this.state.searchText} />} />
                   <Route path='/otdels' element={<EditOtdel searchText={this.state.searchText} /> } />
                       
-                  <Route path='/editForm' element={<EditForm  />} />
-
+                  <Route path='/editForm' element={<EditForm/>} />
 
                   <Route path="/login" element={<Login callBackAdm={this.onSetAdmin} />} />
               </Routes>

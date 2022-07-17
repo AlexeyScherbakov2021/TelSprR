@@ -9,6 +9,8 @@ const Login = props => {
 
     let navigate = useNavigate();
 
+    //console.log("param", Params[0]);
+
     return (
         
         <div className="Login">
@@ -45,11 +47,8 @@ function loginHandler(e, callBack, navigate) {
     if (login === "admin" && pass === "55555") {
         callBack();
         navigate("/");
-
     }
     //console.log("loginHandler", form.login.value);
-
-
 }
 
 export default Login;

@@ -68,7 +68,8 @@ const Card = props => {
 
     const editor = props.adminEdit
         ? <div className="d-flex flex-column flex-shrink-0 justify-content-evenly ms-auto" style={{ marginLeft: "7px" }}>
-            <Link className="btn btn-primary" to={{ pathname: '/editForm', person: props.item }} type="button">Изменить</Link>
+            {/*<Link className="btn btn-primary" to={{ pathname: '/editForm', person: props.item }} type="button">Изменить</Link>*/}
+            <Link className="btn btn-primary" to='/editForm' type="button">Изменить</Link>
             <button className="btn btn-secondary btn-sm" onClick={() => props.callBackDelete(props.item)} type="button">Удалить</button>
         </div>
         : null
