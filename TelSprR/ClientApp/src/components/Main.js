@@ -42,7 +42,7 @@ export class Main extends Component {
     //-----------------------------------------------------------------------------------
     render() {
 
-        //console.log("Main render ", this.props.searchText);
+        //console.log("Main render ", this.props);
 
         return (
             <div>

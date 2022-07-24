@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router-dom';
 import { Main } from './components/Main';
 import { EditOtdel } from './components/Admin/EditOtdel';
 import { EditProf } from './components/Admin/EditProf';
 import { NavMenu } from './components/NavMenu';
-import { EditForm } from './components/EditForm';
+import  EditForm   from './components/Admin/EditForm';
 import Login from './components/Admin/Login';
 
 
@@ -76,7 +76,7 @@ export default class App extends Component {
       return (
           <div>
               <NavMenu adminEdit={this.state.adminEdit} callBackSearch={this.onSetSearch} />
-              <Routes>
+              <Routes >
                   <Route exact path="/" element={
                       <Main adminEdit={this.state.adminEdit} callBackSearch={this.onSetSearch}
                       callBackOtdel={this.clickOtdel} callBackAlpha={this.clickAlpha}

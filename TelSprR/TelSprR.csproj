@@ -28,6 +28,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\components\Admin\EditFormFunc.js" />
     <None Remove="ClientApp\src\components\Cards.css" />
+    <None Remove="ClientApp\src\components\EditForm.js" />
     <None Remove="ClientApp\src\components\EditProf.js" />
   </ItemGroup>
 

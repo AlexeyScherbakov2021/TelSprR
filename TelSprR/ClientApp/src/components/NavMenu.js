@@ -46,7 +46,7 @@ export class NavMenu extends Component {
             </ul>
             : null;
 
-        console.log("Nav", this.num);
+        //console.log("Nav", this.num);
 
 
     return (

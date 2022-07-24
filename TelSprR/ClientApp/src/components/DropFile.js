@@ -3,7 +3,7 @@
 export class DropzoneComponent extends Component {
     static displayName = DropzoneComponent.name;
 
-    files = [];
+    //files = [];
 
     constructor(props) {
         super(props);
@@ -115,11 +115,13 @@ export class DropzoneComponent extends Component {
 
 
         if (this.props.filePhoto != null) {
-            this.urlFile = URL.createObjectURL(this.props.filePhoto);
+            //this.urlFile = URL.createObjectURL(this.props.filePhoto);
+            this.urlFile = this.props.filePhoto;
         }
 
 
         return (
+
             <div style={baseStyle} className="align-items-center justify-content-center">
                 {this.state.drag
                     ? <div className="drop-area"
