@@ -1,6 +1,7 @@
 ﻿import React, { useState, Fragment } from 'react';
 import { DropzoneComponent } from '../DropFile';
 import { useNavigate } from 'react-router-dom';
+import * as axios from 'axios';
 
 var navigate;
 var fileBody;
@@ -16,7 +17,6 @@ const InputFormPerson = (props) => {
     const [otdel, setOtdel] = useState(person.personalOtdelId);
     const [disableSave, setDisableSave] = useState(true);
 
-    var oldPhoto = person.personalPhoto;
 
     //=========================================================================================
     function listProfession() {
@@ -87,28 +87,44 @@ const InputFormPerson = (props) => {
 
         event.preventDefault();
 
-        //if (person.personalPhoto != null) {
-        //    namePhoto = person.personalPhoto;
-        //} else {
-        //    namePhoto = filePhoto == null ? null : filePhoto.name;
-        //}
-
-        console.log("person", person, fileBody);
-
         const data = new FormData();
         data.append("formData", fileBody);
         data.append("person", JSON.stringify(person));
-        data.append("oldPhoto", oldPhoto);
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("post", "cards", true);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                oldPhoto = person.personalPhoto;
-                navigate("/");
-            }
-        };
-        xhr.send(data);
+        axios.post("cards", data, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);                
+                if (res.status === 200) {
+                    navigate("/");
+                } 
+            })
+        .catch(error => console.log(error));
+
+        //oldPhoto = person.personalPhoto;
+        //navigate("/");
+
+        //const data = new FormData();
+        //data.append("formData", fileBody);
+        //data.append("person", JSON.stringify(person));
+        //data.append("oldPhoto", oldPhoto);
+
+        //var xhr = new XMLHttpRequest();
+        //xhr.open("post", "cards", true);
+        //xhr.onload = function () {
+        //    if (xhr.status === 200) {
+        //        oldPhoto = person.personalPhoto;
+        //        navigate("/");
+        //    } else {
+        //        console.log("error save photo");
+        //    }
+
+        //};
+        //xhr.send(data);
+
+
 
     }
     //=========================================================================================
@@ -138,13 +154,7 @@ const InputFormPerson = (props) => {
     //=========================================================================================
     //=========================================================================================
 
-    //console.log("InputFormPerson props", props);
-
     return (
-
-        //<div>
-        //    <h3>Result</h3>
-        //</div>
 
         <div className="row justify-content-center">
             <div className="col">

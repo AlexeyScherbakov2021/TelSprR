@@ -60,6 +60,37 @@ namespace TelSprR.Controllers
         }
 
         //--------------------------------------------------------------------------------------------------
+        //[HttpPost]
+        //[Route("SaveFile")]
+        //public IActionResult SaveFile(IFormCollection FormData)
+        //{
+        //    if (FormData is null)
+        //        return NotFound();
+
+        //    IFormFile file = FormData.Files[0];
+
+        //    string path = "d:/";
+
+
+        //    //using (Stream stream = file.OpenReadStream())
+        //    //{
+        //    //    using (var binaryReader = new BinaryReader(stream))
+        //    //    {
+        //    //        var fileContent = binaryReader.ReadBytes((int)file.Length);
+        //    //        // await _uploadService.AddFile(fileContent, file.FileName, file.ContentType);
+        //    //    }
+        //    //}
+
+
+        //    using (var fileStream = new FileStream(path + file.FileName, FileMode.Create))
+        //    {
+        //        file.CopyTo(fileStream);
+        //    }
+
+        //    return Ok();
+        //}
+
+        //--------------------------------------------------------------------------------------------------
         [HttpPost]
         public IActionResult Post(IFormCollection formData)
         {
@@ -71,7 +102,9 @@ namespace TelSprR.Controllers
             if(person.PersonalProfId < 1)
                 person.PersonalProfId = null;
 
-            string oldPhoto = formData["OldPhoto"];
+            string oldPhoto = personRepo.GetPerson(person.PersonalId).PersonalPhoto;
+
+            int listPhotos = personRepo.Personal.Count(it => it.PersonalPhoto == oldPhoto);
 
             if (person.PersonalId < 1)
                 personRepo.CreatePerson(person);
@@ -80,9 +113,9 @@ namespace TelSprR.Controllers
 
             if (formData != null && person.PersonalId > 0)
             {
-                string path = "ClientApp/public/photo/";
+                //string path = "ClientApp/public/photo/";
+                string path = "ClientApp/build/photo/";
 
-                int listPhotos = personRepo.Personal.Count(it => it.PersonalPhoto == oldPhoto);
 
                 if (oldPhoto != person.PersonalPhoto && listPhotos < 2)
                 {
@@ -97,41 +130,31 @@ namespace TelSprR.Controllers
                 if (formData.Files.Count > 0)
                 {
                     IFormFile file = formData.Files[0];
-                    using (var fileStream = new FileStream(path + file.FileName, FileMode.Create))
-                    {
-                        file.CopyTo(fileStream);
-                    }
+
+                    //if (!System.IO.File.Exists(path + file.FileName))
+                    //{
+
+                        using (Stream stream = file.OpenReadStream())
+                        {
+                            using (var binaryReader = new BinaryReader(stream))
+                            {
+                                var fileContent = binaryReader.ReadBytes((int)file.Length);
+                                System.IO.File.WriteAllBytes(path + file.FileName, fileContent);
+                            }
+                        }
+
+                        //using (var fileStream = new FileStream(path + file.FileName, FileMode.Create))
+                        //{
+                        //    file.CopyTo(fileStream);
+                        //}
+                    //}
                 }
 
-
-                //user = repository.Personal.Where(p => p.PersonalId == id).FirstOrDefault();
-                //if (user == null)
-                //{
-                //    user = new Personal();
-                //    repository.CreatePerson(user);
-                //}
-
-                //user.PersonalPhoto = uploadedFile.FileName;
-                //repository.SavePhoto(user);
-
-                //return RedirectToAction("Edit/" + user.PersonalId.ToString());
-
-                return Ok();
             }
 
-
-
-            //personRepo.EditUser(person);
             return Ok();
         }
 
-        //[HttpPost]
-        //[Route("Create")]
-        //public IActionResult CreatePerson(Personal person)
-        //{
-        //    //personRepo.CreatePerson(person);
-        //    return Ok();
-        //}
 
     //-----------------------------------------------------------------------------------------------------
         [HttpGet]

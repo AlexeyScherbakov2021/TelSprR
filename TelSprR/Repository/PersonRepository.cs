@@ -14,6 +14,14 @@ namespace TelSprR.Repository
 
         public IQueryable<Personal> Personal => context.Personal;
 
+
+
+        public Personal GetPerson(int id)
+        {
+            return context.Personal.FirstOrDefault(it => it.PersonalId == id);
+        }
+
+
         public void CreatePerson(Personal user)
         {
             context.Personal.Add(user);

@@ -11,7 +11,8 @@ export class Cards extends Component {
 
 
         this.state = {
-            listPerson: []
+            listPerson: [],
+            loaded: false
         }
 
         this.currentPage = 1;
@@ -42,6 +43,7 @@ export class Cards extends Component {
             //|| nextProps.currentPage !== this.props.currentPage    
         ) {
             //console.log("shouldComponentUpdate");
+            this.setState({ loaded: false });
             this.currentPage = 1;
             this.loadedPages = false;
             this.LoadCardData(nextProps.curOtdel, nextProps.curAlpha, nextProps.searchText, this.currentPage);
@@ -111,10 +113,14 @@ export class Cards extends Component {
                 for (let d of dataResult)
                     data.push(d);
                 this.setState({ listPerson: data });
+                this.setState({ loaded: true });
+
             }
 
         } else {
             this.setState({ listPerson: dataResult });
+            this.setState({ loaded: true });
+
         }
 
         this.endPage = false;
@@ -153,14 +159,19 @@ export class Cards extends Component {
     render() {
 
         return (
-            <>
-                {this.props.adminEdit ? <Link className="btn btn-primary" type="button" to='/editForm'
-                    style={{ margin: "9px" }}>Создать</Link> : null}
-                {this.state.listPerson.map((item, index) => <Card key={index} adminEdit={this.props.adminEdit} item={item}
-                    callBackDelete={this.DeletePerson} />)}
 
+            !this.state.loaded
+                ? <div>
+                    <img src="loading_spinner.gif" />
+                </div>
 
-            </>
+                : <>
+                    {this.props.adminEdit ? <Link className="btn btn-primary" type="button" to="/editForm" state={{ otdel: this.props.curOtdel }}
+                        style={{ margin: "9px" }}>Создать</Link> : null}
+                    {this.state.listPerson.map((item, index) => <Card key={index} adminEdit={this.props.adminEdit} item={item}
+                        callBackDelete={this.DeletePerson} />)}
+
+                  </>
         );
     }
 

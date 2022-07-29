@@ -12,5 +12,7 @@ namespace TelSprR.Repository
         void CreatePerson(Personal user);
         bool DeletePerson(int id);
         void EditUser(Personal user);
+        Personal GetPerson(int id);
+
     }
 }

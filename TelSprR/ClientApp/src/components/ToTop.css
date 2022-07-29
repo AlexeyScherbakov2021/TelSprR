@@ -6,13 +6,14 @@
     height: 40px;
     border-color: transparent;
     border-radius: 50%;
-    background-color: #0028e9;
+    background-color: #0028e980;
     cursor: pointer;
 }
 
     .totop:hover,
     .totop:focus {
         filter: brightness(1.9);
+        background-color: #0028e9;
         outline: none;
     }
 

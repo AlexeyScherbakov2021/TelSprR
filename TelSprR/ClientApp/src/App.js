@@ -18,7 +18,7 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            adminEdit: true,
+            adminEdit: false,
             searchText: null,
             curAlpha: null,
             curOtdel: -1
