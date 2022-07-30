@@ -28,7 +28,8 @@ const Card = props => {
 
     var photoStyle = {
         marginRight: "12px",
-        height: "136px"
+        //maxHeight: "100px",
+        width: "130px"
     };
 
     var nameStyle = {
@@ -56,12 +57,12 @@ const Card = props => {
 
     var headerWorkPhoneStyle = {
         marginBottom: "0px",
-        marginRight: "44px"
+        width: "180px"
     };
 
     var badgeStyle = {
         fontSize: "18px",
-        borderRadius: "16px"
+        borderRadius: "12px"
     };
 
     //console.log("Card", props.item.personalPhoto);
@@ -69,7 +70,7 @@ const Card = props => {
     const editor = props.adminEdit
         ? <div className="d-flex flex-column flex-shrink-0 justify-content-evenly ms-auto" style={{ marginLeft: "7px" }}>
             {/*<Link className="btn btn-primary" to={{ pathname: '/editForm', id: props.item }} type="button">Изменить</Link>*/}
-            <Link className="btn btn-primary" to="/editForm" state={{ person : props.item }} type="button">Изменить</Link>
+            <Link className="btn btn-primary" to="/editForm" state={{ person: props.item }} type="button" style={{marginBottom : "10px"} }>Изменить</Link>
             <button className="btn btn-secondary btn-sm" onClick={() => props.callBackDelete(props.item)} type="button">Удалить</button>
         </div>
         : null
@@ -80,8 +81,8 @@ const Card = props => {
 
         <div className="col-md-12 col-xxl-10" style={divCardStyle}>
             <div className="card d-flex" id={props.item.personalId} style={cardStyle}>
-                <div className="card-body d-flex" style={cardBodyStyle}>
-                    <img className="float-start" src={"./photo/" + props.item.personalPhoto} style={photoStyle} />
+                <div className="card-body d-flex align-items-center" style={cardBodyStyle}>
+                    <img className="float-start" loading="lazy" src={"./photo/" + props.item.personalPhoto} style={photoStyle} />
                     <div>
                         <div>
                         <h5 className="fw-bold" style={nameStyle}>{props.item.personalLastName + ' ' + props.item.personalName + ' ' +

@@ -1,7 +1,7 @@
 ﻿import React, { useState, Fragment } from 'react';
 import { DropzoneComponent } from '../DropFile';
 import { useNavigate } from 'react-router-dom';
-import * as axios from 'axios';
+//import * as axios from 'axios';
 
 var navigate;
 var fileBody;
@@ -87,42 +87,42 @@ const InputFormPerson = (props) => {
 
         event.preventDefault();
 
-        const data = new FormData();
-        data.append("formData", fileBody);
-        data.append("person", JSON.stringify(person));
+        //const data = new FormData();
+        //data.append("formData", fileBody);
+        //data.append("person", JSON.stringify(person));
 
-        axios.post("cards", data, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        })
-            .then(res => {
-                console.log(res);
-                console.log(res.data);                
-                if (res.status === 200) {
-                    navigate("/");
-                } 
-            })
-        .catch(error => console.log(error));
+        //axios.post("cards", data, {
+        //    headers: { 'Content-Type': 'multipart/form-data' }
+        //})
+        //    .then(res => {
+        //        console.log(res);
+        //        console.log(res.data);                
+        //        if (res.status === 200) {
+        //            navigate("/");
+        //        } 
+        //    })
+        //.catch(error => console.log(error));
 
         //oldPhoto = person.personalPhoto;
         //navigate("/");
 
-        //const data = new FormData();
-        //data.append("formData", fileBody);
-        //data.append("person", JSON.stringify(person));
+        const data = new FormData();
+        data.append("formData", fileBody);
+        data.append("person", JSON.stringify(person));
         //data.append("oldPhoto", oldPhoto);
 
-        //var xhr = new XMLHttpRequest();
-        //xhr.open("post", "cards", true);
-        //xhr.onload = function () {
-        //    if (xhr.status === 200) {
-        //        oldPhoto = person.personalPhoto;
-        //        navigate("/");
-        //    } else {
-        //        console.log("error save photo");
-        //    }
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", "cards", true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                //oldPhoto = person.personalPhoto;
+                navigate("/");
+            } else {
+                console.log("error save photo");
+            }
 
-        //};
-        //xhr.send(data);
+        };
+        xhr.send(data);
 
 
 

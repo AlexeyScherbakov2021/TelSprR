@@ -113,8 +113,11 @@ namespace TelSprR.Controllers
 
             if (formData != null && person.PersonalId > 0)
             {
-                //string path = "ClientApp/public/photo/";
+#if DEBUG
+                string path = "ClientApp/public/photo/";
+#else
                 string path = "ClientApp/build/photo/";
+#endif
 
 
                 if (oldPhoto != person.PersonalPhoto && listPhotos < 2)
@@ -357,15 +360,20 @@ namespace TelSprR.Controllers
 
         //---------------------------------------------------------------------------------------------------        
         //---------------------------------------------------------------------------------------------------        
-        private void GetSubOtdels(int idOtdel, List<int> idOtdels)
+        private bool GetSubOtdels(int idOtdel, List<int> idOtdels)
         {
             Otdel lo = otdelRepo.Otdel.Where(o => o.OtdelId == idOtdel).Include(p => p.SubOtdel).FirstOrDefault();
+
+            if (lo is null)
+                return false;
+
             foreach (Otdel o in lo.SubOtdel)
             {
                 idOtdels.Add(o.OtdelId);
                 GetSubOtdels(o.OtdelId, idOtdels);
             }
 
+            return true;
         }
 
         //---------------------------------------------------------------------------------------------------        

@@ -36,7 +36,7 @@ export class NavMenu extends Component {
     render() {
 
         let admButton = this.props.adminEdit
-            ? <ul className="navbar-nav ">
+            ? <ul className="navbar-nav ms-auto">
                 <NavItem>
                     <NavLink tag={Link} to="/otdels">Отделы</NavLink>
                 </NavItem>
@@ -57,7 +57,7 @@ export class NavMenu extends Component {
                 <NavbarToggler onClick={this.toggleNavbar} />
                 <Collapse className="navbar-collapse" isOpen={!this.state.collapsed} navbar>
                     {admButton}
-                    <input type="search" ref="searchText" placeholder="Поиск..." ></input>
+                    <input className="ms-auto" type="search" ref="searchText" placeholder="Поиск..." ></input>
                     <button onClick={this.searchSubmit}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-search">
                             <path fillRule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"></path>

@@ -74,7 +74,7 @@ export class DropzoneComponent extends Component {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '20px',
+            padding: '10px',
             borderWidth: 2,
             borderRadius: 2,
             borderColor: '#eeeeee',
@@ -85,26 +85,6 @@ export class DropzoneComponent extends Component {
             height: "300px",
             transition: 'border .3s ease-in-out'
         };
-
-        //const imgStyle = {
-        //    width: "232px"
-        //};
-        //const thumbs = this.files.map(file => (
-        //    <div key={file.name}>
-        //        <img
-        //            src={file.preview}
-        //            alt={file.name}
-        //        />
-        //    </div>
-        //));
-
-        //if (this.drop == false) {
-        //console.log(this.props.urlFile);
-        //this.fileName = this.props.fileName;
-        //this.urlFile = this.props.urlFile;
-
-        //}
-        //this.drop = false;
 
         //console.log("render1 " + this.props.filePhoto);
 
@@ -122,16 +102,20 @@ export class DropzoneComponent extends Component {
 
         return (
 
-            <div style={baseStyle} className="align-items-center justify-content-center">
+            <div style={baseStyle} className="d-flex flex-column align-self-stretch">
+                {/*<div className="d-flex justify-content-center align-items-center" style={{ background: "gray", height: "300px", width: "220px" }} >*/}
+                {/*    <h6>отпустите файл</h6>*/}
+                {/*</div>*/}
+
                 {this.state.drag
-                    ? <div className="drop-area"
+                    ? <div className="drop-area d-flex justify-content-center align-items-center" style={{ height: "300px", width: "220px" } }
                         onDragStart={e => this.dragStartHandler(e)}
                         onDragLeave={e => this.dragLeaveHandler(e)}
                         onDragOver={e => this.dragStartHandler(e)}
                         onDrop={e => this.dropHandler(e)}
                     >отпустите файл</div>
                     :
-                    <div
+                    <div className="drop-area d-flex justify-content-center align-items-center" style={{ height: "300px", width: "220px" }}
                         onDragStart={e => this.dragStartHandler(e)}
                         onDragLeave={e => this.dragLeaveHandler(e)}
                         onDragOver={e => this.dragStartHandler(e)}

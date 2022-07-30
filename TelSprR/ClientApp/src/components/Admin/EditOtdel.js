@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export class EditOtdel extends Component {
     static displayName = EditOtdel.name;
@@ -192,17 +193,31 @@ export class EditOtdel extends Component {
 
         //console.log("currentOtdel", this.state.currentItem);
 
+        let classStd = ["d-block btn", "text-start"];
+
+        if (otdelId == this.state.currentItem?.otdelId)
+            classStd.push("text-light");
+
+        let classLi = ["list-group-item"];
+        if (otdelId == this.state.currentItem?.otdelId) {
+            classLi.push("active");
+            classLi.push("border");
+            classLi.push("border-primary");
+            classLi.push("rounded-2");
+            classLi.push("border-0");
+            classLi.push("text-light");
+        }
+
+
         return (
 
             <li 
-                className={otdelId == this.state.currentItem?.otdelId
-                    ? "list-group-item active border border-primary rounded-2 border-0 text-light"
-                    : "list-group-item"} 
+                className={classLi.join(" ")} 
                     id={otdelId} style={{ padding: 0 }} key={otdelId}>
 
-                <button id={otdelId} className={otdelId == this.state.currentItem?.otdelId ? "btn text-start text-light" : "btn text-start"}
+                <a id={otdelId} className={classStd.join(" ")}
                     onClick={() => this.selectedItem(data)}
-                    type="button" style={{ margin: 1 }} >{otdelId}&nbsp;&nbsp;&nbsp;{otdelName}</button>
+                    type="button" style={{ margin: 1 }} >{otdelId}&nbsp;&nbsp;&nbsp;{otdelName}</a>
                 {
                     subOtdel &&
                     <ul>

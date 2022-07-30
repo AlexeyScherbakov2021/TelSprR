@@ -158,11 +158,20 @@ export class Cards extends Component {
 
     render() {
 
+        const loaderStyle = {
+            display: "inline-block",
+            position: "relative",
+            width: "100px",
+            height: "100px",
+            textAlign: "center"
+        };
+
+
         return (
 
             !this.state.loaded
-                ? <div>
-                    <img src="loading_spinner.gif" />
+                ? <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}>
+                    <img src="loading_spinner.gif" style={loaderStyle} />
                 </div>
 
                 : <>

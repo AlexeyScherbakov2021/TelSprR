@@ -34,12 +34,17 @@ export class Otdel extends Component {
     funOtdels(data) {
         const { otdelName, subOtdel, otdelId } = data;
 
+        const listITemStyle = {
+            //background: "#eff8ff",
+            padding: 0
+        };
+
         return (
 
-            <li className={otdelId == this.props.currentOtdel
+            <li className={otdelId == this.props.currentOtdel  
                 ? "list-group-item active border border-primary rounded-2 border-0 text-light"
                 : "list-group-item"}
-                id={otdelId} style={{ padding: 0 }} key={otdelId} >
+                id={otdelId} style={listITemStyle} key={otdelId} >
 
                 <button id={otdelId} className={otdelId == this.props.currentOtdel ? "btn text-start text-light" : "btn text-start"}
                     type="button" style={{ margin: 1 }} >{otdelName}</button>
@@ -69,7 +74,10 @@ export class Otdel extends Component {
         var ulStyle = {
             height: window.innerHeight - 130,
             marginRight: "10px",
-            borderStyle: "none"
+            borderStyle: "none",
+            //borderColor: "var(--bs-gray-900)",
+            boxShadow: "0px 0px 4px var(--bs-gray-700)"
+
         };
 
         var asideStyle = {
@@ -86,7 +94,7 @@ export class Otdel extends Component {
 
             <aside className="col-3 d-none d-md-block col-lg-4" style={asideStyle}>
                 <div className="mb-1">
-                    <a id="-1" className="btn btn-link fs-5 fw-bold" type="button" onClick={this.props.callBack}>Показать весь список</a>
+                    <a id="-1" className="btn btn-link fs-5 fw-bold" type="button" style={{ marginTop: "-12px" } } onClick={this.props.callBack}>Показать весь список</a>
                 </div>
                 <ul className="list-group border rounded overflow-auto" style={ulStyle} onClick={this.props.callBack}>
                     {contents}

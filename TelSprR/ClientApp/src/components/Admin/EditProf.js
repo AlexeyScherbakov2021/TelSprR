@@ -157,6 +157,7 @@ export class EditProf extends Component {
 
         //console.log("render Prof", this.state.currentItem?.profId);
 
+
         return (
             <div style={{ margin: "6px", marginLeft: "20px"} }>
                 <h3>Список должностей</h3>
@@ -173,10 +174,10 @@ export class EditProf extends Component {
                                     ? "list-group-item active border border-primary rounded-2 border-0 text-light"
                                     : "list-group-item"} >
 
-                                <button id={item.profId} 
-                                    className={item.profId == this.state.currentItem?.profId ? "btn text-start text-light" : "btn text-start"}
+                                <a id={item.profId} 
+                                    className={item.profId == this.state.currentItem?.profId ? "btn text-start text-light" : "d-block btn text-start"}
                                     onClick={() => this.selectedItem(item)}
-                                    type="button" style={{ margin: 1 }} >{item.profId}&nbsp;&nbsp;&nbsp;{item.profName}</button>
+                                    type="button" style={{ margin: 1 }} >{item.profId}&nbsp;&nbsp;&nbsp;{item.profName}</a>
 
                             </li>
 

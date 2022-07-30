@@ -28,7 +28,7 @@ export class ToTop extends Component {
 
     //-----------------------------------------------------------------------------------
     onScrollList(e) {
-        if (window.scrollY > 0) {
+        if (window.scrollY > 400) {
             this.setState({ displayToTop: "block" });
         } else {
             this.setState({ displayToTop: "none" });
