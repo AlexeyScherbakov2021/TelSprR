@@ -1,7 +1,7 @@
 ﻿import React, { useRef } from 'react';
 import Otdel from './Otdel';
 import Alpha from './Alpha';
-import { Cards } from './Cards';
+import Cards from './Cards';
 import ToTop from './ToTop'
 
 
