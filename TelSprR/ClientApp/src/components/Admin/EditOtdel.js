@@ -1,73 +1,62 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-export class EditOtdel extends Component {
-    static displayName = EditOtdel.name;
-    constructor(props) {
-        super(props);
+function EditOtdel() {
 
-        this.state = {
-            listOtdel: [],
-            currentItem: null,
-            listHeight: window.innerHeight - 160
+    const [listOtdel, setListOtdel] = useState([]);
+    const [currentItem, setCurrentItem] = useState(null);
+    const [listHeight, setListHeight] = useState(window.innerHeight - 160);
+    const [loaded, setLoaded] = useState(false);
 
-        };
+    const isSubOtdel = useRef();
 
-        this.funOtdels = this.funOtdels.bind(this);
-        this.onResize = this.onResize.bind(this);
-        this.EditName = this.EditName.bind(this);
-        this.CreateName = this.CreateName.bind(this);
-        this.Delete = this.Delete.bind(this);
-        this.selectedItem = this.selectedItem.bind(this);
-        this.deleteFromOtdel = this.deleteFromOtdel.bind(this);
-    }
+    useEffect(() => {
+        //console.log("useEffect start");
+        window.addEventListener('resize', onResize)
 
-    componentDidMount() {
-        window.addEventListener('resize', this.onResize)
-        this.LoadOtdelData();
-    }
+        if (!loaded) {
+            LoadOtdelData();
+        }
 
-    //-----------------------------------------------------------------------------------------------
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.onResize)
-    }
-
-    //-----------------------------------------------------------------------------------------------
-    onResize() {
-        this.setState({
-            listHeight: window.innerHeight - 160
-        })
-    }
+        return () => {
+            //console.log("useEffect end");
+            window.removeEventListener('resize', onResize)
+        }
+    }, [listHeight, loaded, listOtdel]);
 
 
     //-----------------------------------------------------------------------------------------------
+    function onResize() {
+        setListHeight(window.innerHeight - 160);
+    }
 
-    async LoadOtdelData() {
+    //-----------------------------------------------------------------------------------------------
+
+    async function LoadOtdelData() {
 
         const response = await fetch('otdel');
         const data = await response.json();
-        this.setState({ listOtdel: data });
+        setListOtdel(data);
+        setLoaded(true);
     }
 
     //-------------------------------------------------------------------------------------------------------------------
-    selectedItem(item) {
+    function selectedItem(item) {
         //console.log("selectedItem", item);
-        this.setState({ currentItem : item});
-        //this.currentItem = item;
+        setCurrentItem(item);
+        //this.setState({ currentItem: item });
     }
 
     //-------------------------------------------------------------------------------------------------------------------
-    CreateName(e) {
-
-
+    function CreateName(e) {
 
         //console.log("currentItem", this.currentItem);
         // console.log("isSubOtdel" , this.refs.isSubOtdel.checked);
-        if (this.state.currentItem == null ) {
-            if (this.refs.isSubOtdel.checked) {
+        if (currentItem == null) {
+            if (isSubOtdel.current.checked) {
                 return;
-            } 
-        } 
+            }
+        }
 
         let result = prompt("Наименование нового отдела");
 
@@ -78,7 +67,7 @@ export class EditOtdel extends Component {
         const newItem = {
             otdelId: 0,
             otdelName: result,
-            otdelParentId: this.refs.isSubOtdel.checked ? this.state.currentItem.otdelId : null,
+            otdelParentId: isSubOtdel.current.checked ? currentItem.otdelId : null,
             //otdelParent: this.currentItem
         };
 
@@ -87,20 +76,21 @@ export class EditOtdel extends Component {
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function () {
             if (xhr.status === 200) {
-                const data = this.state.listOtdel;
+                const data = [...listOtdel];
                 newItem.otdelId = xhr.response;
                 this.refs.isSubOtdel.checked
-                    ? this.state.currentItem.subOtdel.splice(0, 0, newItem)
+                    ? currentItem.subOtdel.splice(0, 0, newItem)
                     : data.splice(0, 0, newItem);
                 //data.splice(0, 0, newItem);
-                this.setState({ listOtdel: data });
+                setListOtdel(data);
             }
         }.bind(this);
         xhr.send(JSON.stringify(newItem));
 
     }
+
     //-------------------------------------------------------------------------------------------------------------------
-    EditName(e, item) {
+    function EditName(e, item) {
         //console.log("Edit", item);
 
         if (item == null)
@@ -122,8 +112,8 @@ export class EditOtdel extends Component {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 //console.log("xhr", xhr);
-                const data = this.state.listOtdel;
-                this.setState({ listOtdel: data });
+                const data = [...listOtdel];
+                setListOtdel(data);
             }
         }.bind(this);
         xhr.send(JSON.stringify(item));
@@ -131,32 +121,33 @@ export class EditOtdel extends Component {
     }
 
     //-------------------------------------------------------------------------------------------------------------------
-    Delete(e) {
+    function Delete(e) {
 
-        if (this.state.currentItem == null)
+        if (currentItem == null)
             return;
 
         //console.log("item", this.currentItem);
 
-        var result = window.confirm('Удалить "' + this.state.currentItem.otdelId + ' ' + this.state.currentItem.otdelName + "?");
+        var result = window.confirm('Удалить "' + currentItem.otdelId + ' ' + currentItem.otdelName + "?");
 
         if (result) {
             var xhr = new XMLHttpRequest();
-            xhr.open("delete", "otdel/" + this.state.currentItem.otdelId, true);
+            xhr.open("delete", "otdel/" + currentItem.otdelId, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onload = function () {
                 //console.log("status = " + xhr.status);
                 if (xhr.status === 200) {
-                    const data = this.state.listOtdel;
+                    const data = [...listOtdel];
 
                     //const index = this.currentItem.subOtdel.findIndex(e => e.otdelId === this.currentItem.otdelId);
-                    //console.log("index", index);
+                    console.log("data", data);
 
-                    this.deleteFromOtdel(data, this.state.currentItem.otdelId, this.state.currentItem.otdelParentId);
+                    deleteFromOtdel(data, currentItem.otdelId, currentItem.otdelParentId);
 
                     //this.currentItem.subOtdel.splice(index, 1);
                     //delete data[index];
-                    this.setState({ listOtdel: data });
+                    setListOtdel(data);
+
                 } else {
                     alert("Ошибка при удалении. Возможно отдел используется.");
                 }
@@ -167,7 +158,7 @@ export class EditOtdel extends Component {
     }
 
     //-----------------------------------------------------------------------------------------------
-    deleteFromOtdel(list, id, parentId) {
+    function deleteFromOtdel(list, id, parentId) {
 
         if (list == null)
             return true;
@@ -178,9 +169,9 @@ export class EditOtdel extends Component {
                 return true;
             }
 
-            if (this.deleteFromOtdel(list[i].subOtdel, id, parentId) == true) {
+            if (deleteFromOtdel(list[i].subOtdel, id, parentId) == true) {
                 return true;
-            }                
+            }
 
         }
 
@@ -188,18 +179,18 @@ export class EditOtdel extends Component {
 
 
     //-----------------------------------------------------------------------------------------------
-    funOtdels(data) {
+    function funOtdels(data) {
         const { otdelName, subOtdel, otdelId } = data;
 
         //console.log("currentOtdel", this.state.currentItem);
 
         let classStd = ["d-block btn", "text-start"];
 
-        if (otdelId == this.state.currentItem?.otdelId)
+        if (otdelId == currentItem?.otdelId)
             classStd.push("text-light");
 
         let classLi = ["list-group-item"];
-        if (otdelId == this.state.currentItem?.otdelId) {
+        if (otdelId == currentItem?.otdelId) {
             classLi.push("active");
             classLi.push("border");
             classLi.push("border-primary");
@@ -211,55 +202,53 @@ export class EditOtdel extends Component {
 
         return (
 
-            <li 
-                className={classLi.join(" ")} 
-                    id={otdelId} style={{ padding: 0 }} key={otdelId}>
+            <li
+                className={classLi.join(" ")}
+                id={otdelId} style={{ padding: 0 }} key={otdelId}>
 
                 <a id={otdelId} className={classStd.join(" ")}
-                    onClick={() => this.selectedItem(data)}
+                    onClick={() => selectedItem(data)}
                     type="button" style={{ margin: 1 }} >{otdelId}&nbsp;&nbsp;&nbsp;{otdelName}</a>
                 {
                     subOtdel &&
                     <ul>
-                        {subOtdel.map((child, n) => this.funOtdels(child, n))}
+                        {subOtdel.map((child, n) => funOtdels(child, n))}
                     </ul>
                 }
             </li>
         );
     }
 
-    //-------------------------------------------------------------------------------------------------------------------
+    const buttonStyle = {
+        margin: "5px"
+    };
+    const listStyle = {
+        height: listHeight
+    };
 
-    render() {
-
-        const buttonStyle = {
-            margin: "5px"
-        };
-        const listStyle = {
-            height: this.state.listHeight
-        };
-
-
-        //console.log("render Otdel", this.props.searchText);
-
-        return (
-            <div style={{ margin: "6px", marginLeft: "20px" }}>
-                <h3>Список отделов</h3>
-                <div className="d-flex align-items-center">
-                    <button className="btn btn-primary" onClick={(e) => this.EditName(e, this.state.currentItem)} style={buttonStyle}>Изменить</button>
-                    <button className="btn btn-secondary" onClick={this.Delete} style={buttonStyle}>Удалить</button>
-                    <button className="btn btn-primary" onClick={this.CreateName} style={buttonStyle} >Создать</button>
-                    <div className="form-check" style={{ marginLeft: "8px" }}>
-                        <input ref="isSubOtdel" id="formCheck-1" className="form-check-input" type="checkbox" />
-                        <label className="form-check-label" htmlFor="formCheck-1">В выбранном отделе</label>
-                    </div>
+    return (
+        <div style={{ margin: "6px", marginLeft: "20px" }}>
+            <h3>Список отделов</h3>
+            <div className="d-flex align-items-center">
+                <button className="btn btn-primary" onClick={(e) => EditName(e, currentItem)} style={buttonStyle}>Изменить</button>
+                <button className="btn btn-secondary" onClick={Delete} style={buttonStyle}>Удалить</button>
+                <button className="btn btn-primary" onClick={CreateName} style={buttonStyle} >Создать</button>
+                <div className="form-check" style={{ marginLeft: "8px" }}>
+                    <input ref={isSubOtdel} id="formCheck-1" className="form-check-input" type="checkbox" />
+                    <label className="form-check-label" htmlFor="formCheck-1">В выбранном отделе</label>
                 </div>
-                <ul className="list-group border rounded overflow-auto" style={listStyle}>
-                    {this.state.listOtdel.map((data) => this.funOtdels(data))}
-                </ul>
             </div>
-            )
-    }
+            <ul className="list-group border rounded overflow-auto" style={listStyle}>
+                {listOtdel.map((data) => funOtdels(data))}
+            </ul>
+        </div>
+    )
+
+
 
 
 }
+
+export default EditOtdel;
+
+

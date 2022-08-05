@@ -1,64 +1,56 @@
-import React, { Component } from 'react';
+import React, { useState, useRef } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Login from './Admin/Login';
 import './NavMenu.css';
 
-export class NavMenu extends Component {
-  static displayName = NavMenu.name;
 
-  constructor (props) {
-    super(props);
+function NavMenu(props) {
 
-    this.toggleNavbar = this.toggleNavbar.bind(this);
-    this.state = {
-      collapsed: true
-      };
+    const [collapsed, setCollapsed] = useState(true);
 
-      this.searchSubmit = this.searchSubmit.bind(this);
-  }
-
-  toggleNavbar () {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  }
-
-    //-----------------------------------------------------------------------------------
-    searchSubmit(e) {
-        //console.log("searchSubmit", this.refs.searchText.value);
-        this.props.callBackSearch(this.refs.searchText.value);
-        this.refs.searchText.value = '';
-    }
+    const refSearch = useRef();
 
 
     //---------------------------------------------------------------------------------------
-    render() {
+    function toggleNavbar() {
+        setCollapsed(!collapsed);
+    }
 
-        let admButton = this.props.adminEdit
-            ? <ul className="navbar-nav ms-auto">
-                <NavItem>
-                    <NavLink tag={Link} to="/otdels">Отделы</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/profession">Должности</NavLink>
-                </NavItem>
-            </ul>
-            : null;
+    //-----------------------------------------------------------------------------------
+    function searchSubmit(e) {
 
-        //console.log("Nav", this.num);
+        console.log(refSearch);
+
+        props.callBackSearch(refSearch.current.value);
+        refSearch.current.value = '';
+    }
+    //-----------------------------------------------------------------------------------
+
+    let admButton = props.adminEdit
+        ? <ul className="navbar-nav ms-auto">
+            <NavItem>
+                <NavLink tag={Link} to="/otdels">Отделы</NavLink>
+            </NavItem>
+            <NavItem>
+                <NavLink tag={Link} to="/profession">Должности</NavLink>
+            </NavItem>
+        </ul>
+        : null;
+
 
 
     return (
+
         <Navbar className="navbar-dark navbar-expand-md sticky-top py-2 " style={{ background: "#00406b" }}>
             <div className="container-fluid">
                 <img src="NGK.png" style={{ width: 110 }} className="img-thumbnail bg-primary mx-2" />
                 <NavbarBrand className="" tag={Link} to="/">Телефонный справочник</NavbarBrand>
-                <NavbarToggler onClick={this.toggleNavbar} />
-                <Collapse className="navbar-collapse" isOpen={!this.state.collapsed} navbar>
+                <NavbarToggler onClick={toggleNavbar} />
+                <Collapse className="navbar-collapse" isOpen={!collapsed} navbar>
                     {admButton}
-                    <input className="ms-auto" type="search" ref="searchText" placeholder="Поиск..." ></input>
-                    <button onClick={this.searchSubmit}>
+                    <input className="ms-auto" type="search" ref={refSearch} placeholder="Поиск..." ></input>
+                    <button onClick={searchSubmit}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" className="bi bi-search">
                             <path fillRule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"></path>
                             <path fillRule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"></path>
@@ -68,6 +60,12 @@ export class NavMenu extends Component {
                 <NavLink tag={Link} to='/login' >#</NavLink>
             </div>
         </Navbar>
-    );
-  }
+
+        );
+
+
+
 }
+
+export default NavMenu;
+

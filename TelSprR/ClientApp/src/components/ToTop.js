@@ -1,57 +1,41 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import './ToTop.css'
 
-export class ToTop extends Component {
-    static displayName = ToTop.name;
+function ToTop(props) {
+    const [displayToTop, setDisplayToTop] = useState("none");
 
-    constructor(props) {
-        super(props);
+    useEffect(() => {
+        window.addEventListener('scroll', onScrollList);
 
-        this.state = {
-            displayToTop: "none"
-        };
-
-        this.onScrollList = this.onScrollList.bind(this);
-        this.onClick = this.onClick.bind(this);
-    }
+        return () => {
+            window.removeEventListener('scroll', onScrollList)
+        }
+    });
 
     //-----------------------------------------------------------------------------------
-    componentDidMount() {
-        window.addEventListener('scroll', this.onScrollList)
-    }
-
-    //-----------------------------------------------------------------------------------
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.onScrollList)
-    }
-
-
-    //-----------------------------------------------------------------------------------
-    onScrollList(e) {
+    function onScrollList(e) {
         if (window.scrollY > 400) {
-            this.setState({ displayToTop: "block" });
+            setDisplayToTop("block");
         } else {
-            this.setState({ displayToTop: "none" });
+            setDisplayToTop("none");
         }
     }
-
     //-----------------------------------------------------------------------------------
-    onClick(e) {
+    function onClick(e) {
         window.scrollTo(0, 0);
     }
 
+    var toTopStyle = {
+        display: displayToTop
+    };
 
-    //-----------------------------------------------------------------------------------
-    render() {
-
-        var toTopStyle = {
-            display: this.state.displayToTop
-        };
-
-
-        return (
-            <a className="totop" style={toTopStyle} onClick={this.onClick}></a>
-        );
-    }
+    return (
+        <a className="totop" style={toTopStyle} onClick={onClick}></a>
+    );
 
 }
+
+export default ToTop;
+
+
+
