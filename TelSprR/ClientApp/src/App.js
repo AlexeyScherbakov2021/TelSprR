@@ -12,8 +12,8 @@ import './custom.css'
 function App() {
 
     const [adminEdit, setAdminEdit] = useState(true);
-    const [searchText, setSearchText] = useState(null);
-    const [curAlpha, setCurAlpha] = useState(null);
+    const [searchText, setSearchText] = useState('');
+    const [curAlpha, setCurAlpha] = useState('');
     const [curOtdel, setCurOtdel] = useState(-1);
 
     //-----------------------------------------------------------------------------------------------------------
@@ -23,22 +23,22 @@ function App() {
 
     //-----------------------------------------------------------------------------------------------------------
     function onSetSearch(searchText) {
-        setCurAlpha(null);
+        setCurAlpha('');
         setCurOtdel(-1);
         setSearchText(searchText);
     }
 
     //-----------------------------------------------------------------------------------------------------------
     function clickOtdel(e) {
-        setCurAlpha(null);
+        setCurAlpha('');
         setCurOtdel(e.target.id);
-        setSearchText(null);
+        setSearchText('');
     }
 
     //-----------------------------------------------------------------------------------------------------------
     function clickAlpha(e) {
         setCurAlpha(e.target.id);
-        setSearchText(null);
+        setSearchText('');
     }
 
     return (

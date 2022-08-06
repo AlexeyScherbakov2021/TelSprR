@@ -82,7 +82,7 @@ const Card = props => {
         <div className="col-md-12 col-xxl-10" style={divCardStyle}>
             <div className="card d-flex" id={props.item.personalId} style={cardStyle}>
                 <div className="card-body d-flex align-items-center" style={cardBodyStyle}>
-                    <img className="float-start" loading="lazy" src={"./photo/" + props.item.personalPhoto} style={photoStyle} />
+                    <img className="float-start" src={"./photo/" + props.item.personalPhoto} style={photoStyle} />
                     <div>
                         <div>
                         <h5 className="fw-bold" style={nameStyle}>{props.item.personalLastName + ' ' + props.item.personalName + ' ' +
