@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { mapStateToProps, mapDispatchToProps } from '../redux/RootReducer'
+import { connect } from 'react-redux';
 import Login from './Admin/Login';
 import './NavMenu.css';
 
@@ -20,14 +22,13 @@ function NavMenu(props) {
     //-----------------------------------------------------------------------------------
     function searchSubmit(e) {
 
-        console.log(refSearch);
-
-        props.callBackSearch(refSearch.current.value);
+        //console.log(refSearch);
+        props.onSearch(refSearch.current.value);
         refSearch.current.value = '';
     }
     //-----------------------------------------------------------------------------------
 
-    let admButton = props.adminEdit
+    let admButton = props.isAdmin
         ? <ul className="navbar-nav ms-auto">
             <NavItem>
                 <NavLink tag={Link} to="/otdels">Отделы</NavLink>
@@ -67,5 +68,5 @@ function NavMenu(props) {
 
 }
 
-export default NavMenu;
+export default connect(mapStateToProps, mapDispatchToProps) (NavMenu);
 

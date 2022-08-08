@@ -1,0 +1,1 @@
+﻿export const SELECT_OTDEL = 'SELECT_OTDEL';

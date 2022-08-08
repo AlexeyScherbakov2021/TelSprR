@@ -1,4 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from '../redux/RootReducer'
 
 function Otdel(props) {
 
@@ -7,7 +9,10 @@ function Otdel(props) {
     const [loaded, setLoaded] = useState(false);
     const [listHeight, setListHeight] = useState(window.innerHeight - 150);
 
-    //console.log("Otdel start");
+    
+
+    //console.log("Otdel start", props);
+
 
     useEffect(() => {
         //console.log("Otdel useEffect start");
@@ -40,12 +45,12 @@ function Otdel(props) {
 
         return (
 
-            <li className={otdelId == props.currentOtdel
+            <li className={otdelId == props.selectedOtdel
                 ? "list-group-item active border border-primary rounded-2 border-0 text-light"
                 : "list-group-item"}
                 id={otdelId} style={listITemStyle} key={otdelId} >
 
-                <button id={otdelId} className={otdelId == props.currentOtdel ? "btn text-start text-light" : "btn text-start"}
+                <button id={otdelId} className={otdelId == props.selectedOtdel ? "btn text-start text-light" : "btn text-start"}
                     type="button" style={{ margin: 1 }} >{otdelName}</button>
                 {
                     subOtdel &&
@@ -57,7 +62,15 @@ function Otdel(props) {
         );
     }
 
-        //-----------------------------------------------------------------------------------------------
+
+    //-----------------------------------------------------------------------------------------------------------
+    function clickOtdel(e) {
+        props.onSelectOtdel(e.target.id);
+    }
+
+
+
+    //-----------------------------------------------------------------------------------------------
 
     async function LoadOtdelData() {
 
@@ -83,6 +96,8 @@ function Otdel(props) {
     };
 
 
+    //console.log("Otdel", props);
+
     //let contents = loading
     //    ? <p><em>Загрузка отделов...</em></p>
     //    : listOtdel.map((data) => funOtdels(data))
@@ -92,9 +107,10 @@ function Otdel(props) {
     return (
         <aside className="col-3 d-none d-md-block col-lg-4" style={asideStyle}>
             <div className="mb-1">
-                <a id="-1" className="btn btn-link fs-5 fw-bold" type="button" style={{ marginTop: "-12px" }} onClick={props.callBack}>Показать весь список</a>
+                <a id="-1" className="btn btn-link fs-5 fw-bold" type="button" style={{ marginTop: "-12px" }}
+                    onClick={() => props.onSelectOtdel(-1)}>Показать весь список</a>
             </div>
-            <ul className="list-group border rounded overflow-auto" style={ulStyle} onClick={props.callBack}>
+            <ul className="list-group border rounded overflow-auto" style={ulStyle} onClick={clickOtdel}>
                 {contents}
             </ul>
         </aside>
@@ -103,7 +119,7 @@ function Otdel(props) {
 
 }
 
-export default Otdel;
+export default connect(mapStateToProps, mapDispatchToProps)(Otdel);
 
 
 

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Main from './components/Main';
 import EditOtdel from './components/Admin/EditOtdel';
 import EditProf from './components/Admin/EditProf';
 import NavMenu from './components/NavMenu';
 import  EditForm   from './components/Admin/EditForm';
 import Login from './components/Admin/Login';
+import { mapStateToProps, mapDispatchToProps } from './redux/RootReducer'
 import './custom.css'
 
 
-function App() {
+function App(props) {
 
     const [adminEdit, setAdminEdit] = useState(true);
     const [searchText, setSearchText] = useState('');
@@ -41,14 +43,20 @@ function App() {
         setSearchText('');
     }
 
+
+    //console.log("App", props);
+
     return (
         <div>
-            <NavMenu adminEdit={adminEdit} callBackSearch={onSetSearch} />
+            {/*<NavMenu adminEdit={adminEdit} callBackSearch={onSetSearch} />*/}
+            <NavMenu />
             <Routes >
                 <Route exact path="/" element={
-                    <Main adminEdit={adminEdit} callBackSearch={onSetSearch}
-                        callBackOtdel={clickOtdel} callBackAlpha={clickAlpha}
-                        searchText={searchText} curOtdel={curOtdel} curAlpha={curAlpha} />
+
+                  <Main adminEdit={adminEdit} callBackSearch={onSetSearch}
+                      callBackOtdel={clickOtdel} callBackAlpha={clickAlpha}
+                      setOtdel={props.onSelectOtdel} setAlpha={props.onSelectAlpha }
+                      searchText={searchText} curOtdel={curOtdel} curAlpha={curAlpha} />
                 } />
 
                 <Route path='/profession' element={<EditProf searchText={searchText} />} />
@@ -66,5 +74,26 @@ function App() {
 
 }
 
-export default App;
+
+//function mapStateToProps(state) {
+//    return {
+//        selectedOtdel: state.selectedOtdel,
+//        selectedAlpha: state.selectedAlpha,
+//        searchText: state.searchText,
+//        isAdmin: state.isAdmin
+//    }
+//}
+
+//function mapDispatchToProps(dispatch) {
+//    return {
+//        onSelectOtdel: (idOtdel) => dispatch({ type: 'SELECT_OTDEL', payload: idOtdel }),
+//        onSelectAlpha: (alpha) => dispatch({ type: 'SELECT_ALPHA', payload: alpha}),
+//        onSearch: (searchText) => dispatch({ type: 'SEARCH', payload: searchText }),
+//        setAdmin: () => dispatch({ type: 'IS_ADMIN' })
+//    }
+//}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+//export default App;
 
