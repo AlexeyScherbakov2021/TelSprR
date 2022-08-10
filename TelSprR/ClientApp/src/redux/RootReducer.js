@@ -10,7 +10,7 @@ const initialState = {
     searchText: '',
     searchTextProf: '',
     searchTextOtdel: '',
-    isAdmin: true,
+    isAdmin: false,
     listPerson: undefined,
     loadedCards: false,
     isLoading: false,

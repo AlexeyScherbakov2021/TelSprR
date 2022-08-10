@@ -7,7 +7,6 @@ import Cards from './Cards';
 import ToTop from './ToTop'
 
 
-
 function Main(props) {
 
     const mainRef = useRef();

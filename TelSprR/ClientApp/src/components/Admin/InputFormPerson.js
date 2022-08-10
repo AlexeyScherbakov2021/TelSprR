@@ -70,7 +70,7 @@ const InputFormPerson = (props) => {
             setDisableSave(false);
         }
 
-        console.log("BrowsePhoto filePhoto", filePhoto);
+        //console.log("BrowsePhoto filePhoto", filePhoto);
 
     }
     //=========================================================================================
@@ -169,7 +169,7 @@ const InputFormPerson = (props) => {
         navigate('/');
     }
 
-    console.log("fileBody", filePhoto);
+    //console.log("fileBody", filePhoto);
     //=========================================================================================
 
     return (
