@@ -1,7 +1,7 @@
 ﻿import React, { Component, useState, useEffect, useCallback } from 'react';
 import Card from './Card';
 import { Link } from 'react-router-dom';
-import { connect, useDispatch, useStore } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from '../redux/RootReducer'
 
 
@@ -43,36 +43,6 @@ function Cards(props) {
 
     }
 
-
-    //-----------------------------------------------------------------------------------
-    function DeletePerson(person) {
-
-    //    //console.log("DeletePerson " + person.personalId);
-
-        var result = window.confirm('Удалить "' + person.personalLastName + ' ' + person.personalName + ' ' + person.personalMidName + '"');
-
-        if (result) {
-
-            props.DeletePerson(person.personalId);
-    //        var xhr = new XMLHttpRequest();
-    //        xhr.open("delete", "cards/" + person.personalId, true);
-    //        xhr.setRequestHeader("Content-Type", "application/json");
-    //        xhr.onload = function () {
-    //            //console.log("status = " + xhr.status);
-    //            if (xhr.status === 200) {
-    //                const list = listPerson;
-    //                const index = list.findIndex(e => e.personalId === person.personalId);
-
-    //                list.splice(index, 1);
-    //                //delete data[index];
-    //                setListPerson(list);
-
-    //            }
-    //        }.bind(this);
-    //        xhr.send();
-        }
-    }
-
     const loaderStyle = {
         display: "inline-block",
         position: "relative",
@@ -81,7 +51,7 @@ function Cards(props) {
         textAlign: "center"
     };
 
-
+    //console.log("Cards", props);
 
     return (
 
@@ -93,13 +63,10 @@ function Cards(props) {
             : <>
                 {props.isAdmin ? <Link className="btn btn-primary" type="button" to="/editForm" state={{ otdel: props.selectedOtdel }}
                     style={{ margin: "9px" }}>Создать</Link> : null}
-                {props.listPerson.map((item, index) => <Card key={index} adminEdit={props.isAdmin} item={item}
-                    callBackDelete={DeletePerson} />)}
+                {props.listPerson.map((item, index) => <Card key={index} item={item} />)}
 
             </>
     );
-
-    console.log("function return");
 
 }
 

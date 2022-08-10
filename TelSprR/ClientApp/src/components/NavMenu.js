@@ -5,6 +5,7 @@ import { mapStateToProps, mapDispatchToProps } from '../redux/RootReducer'
 import { connect } from 'react-redux';
 import Login from './Admin/Login';
 import './NavMenu.css';
+import { useLocation } from 'react-router-dom';
 
 
 function NavMenu(props) {
@@ -13,6 +14,8 @@ function NavMenu(props) {
 
     const refSearch = useRef();
 
+    const location = useLocation();
+    //console.log("location", location);
 
     //---------------------------------------------------------------------------------------
     function toggleNavbar() {
@@ -23,7 +26,7 @@ function NavMenu(props) {
     function searchSubmit(e) {
 
         //console.log(refSearch);
-        props.onSearch(refSearch.current.value);
+        props.onSearch(refSearch.current.value, location.pathname);
         refSearch.current.value = '';
     }
     //-----------------------------------------------------------------------------------

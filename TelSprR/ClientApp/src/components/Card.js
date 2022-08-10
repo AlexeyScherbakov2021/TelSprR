@@ -1,9 +1,17 @@
 ﻿import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from '../redux/RootReducer'
 
 
 const Card = props => {
 
+    //const dispatch = useDispatch();
+
+    //function handleDelete( person) {
+        //dispatch({ type: 'DELETE_PERSON', payload: person  });
+        //props.DeletePerson(person);
+    //}
 
     var divCardStyle = {
         marginTop: "12px",
@@ -65,13 +73,15 @@ const Card = props => {
         borderRadius: "12px"
     };
 
-    //console.log("Card", props.item.personalPhoto);
+    //console.log("Card", props.item);
 
-    const editor = props.adminEdit
+    const editor = props.isAdmin
         ? <div className="d-flex flex-column flex-shrink-0 justify-content-evenly ms-auto" style={{ marginLeft: "7px" }}>
             {/*<Link className="btn btn-primary" to={{ pathname: '/editForm', id: props.item }} type="button">Изменить</Link>*/}
-            <Link className="btn btn-primary" to="/editForm" state={{ person: props.item }} type="button" style={{marginBottom : "10px"} }>Изменить</Link>
-            <button className="btn btn-secondary btn-sm" onClick={() => props.callBackDelete(props.item)} type="button">Удалить</button>
+            <Link className="btn btn-primary" to="/editForm" state={{ person: props.item }}
+                type="button" style={{ marginBottom: "10px" }}>Изменить</Link>
+            <button className="btn btn-secondary btn-sm" onClick={() => props.DeletePerson(props.item)}
+                type="button">Удалить</button>
         </div>
         : null
 
@@ -159,4 +169,4 @@ const Card = props => {
 
 
 
-export default Card;
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

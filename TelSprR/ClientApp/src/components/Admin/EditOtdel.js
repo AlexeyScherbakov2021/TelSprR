@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+//import { Link } from 'react-router-dom';
 
 function EditOtdel() {
 
@@ -9,6 +10,8 @@ function EditOtdel() {
     const [loaded, setLoaded] = useState(false);
 
     const isSubOtdel = useRef();
+
+    const searchTextOtdel = useSelector(state => state.searchTextOtdel);
 
     useEffect(() => {
         //console.log("useEffect start");
@@ -51,7 +54,6 @@ function EditOtdel() {
     function CreateName(e) {
 
         //console.log("currentItem", this.currentItem);
-        // console.log("isSubOtdel" , this.refs.isSubOtdel.checked);
         if (currentItem == null) {
             if (isSubOtdel.current.checked) {
                 return;
@@ -59,6 +61,7 @@ function EditOtdel() {
         }
 
         let result = prompt("Наименование нового отдела");
+
 
         if (result == null) {
             return;
@@ -71,6 +74,8 @@ function EditOtdel() {
             //otdelParent: this.currentItem
         };
 
+        console.log("CreateName newItem", newItem);
+
         var xhr = new XMLHttpRequest();
         xhr.open("post", "otdel", true);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -78,7 +83,7 @@ function EditOtdel() {
             if (xhr.status === 200) {
                 const data = [...listOtdel];
                 newItem.otdelId = xhr.response;
-                this.refs.isSubOtdel.checked
+                isSubOtdel.current.checked
                     ? currentItem.subOtdel.splice(0, 0, newItem)
                     : data.splice(0, 0, newItem);
                 //data.splice(0, 0, newItem);
@@ -140,7 +145,7 @@ function EditOtdel() {
                     const data = [...listOtdel];
 
                     //const index = this.currentItem.subOtdel.findIndex(e => e.otdelId === this.currentItem.otdelId);
-                    console.log("data", data);
+                    //console.log("data", data);
 
                     deleteFromOtdel(data, currentItem.otdelId, currentItem.otdelParentId);
 
@@ -180,7 +185,12 @@ function EditOtdel() {
 
     //-----------------------------------------------------------------------------------------------
     function funOtdels(data) {
+
         const { otdelName, subOtdel, otdelId } = data;
+
+        if (!otdelName.toLowerCase().includes(searchTextOtdel.toLowerCase())) {
+            return null;
+        }
 
         //console.log("currentOtdel", this.state.currentItem);
 
@@ -226,8 +236,21 @@ function EditOtdel() {
         height: listHeight
     };
 
+    const loaderStyle = {
+        display: "inline-block",
+        position: "relative",
+        width: "100px",
+        height: "100px",
+        textAlign: "center"
+    };
+
     return (
-        <div style={{ margin: "6px", marginLeft: "20px" }}>
+        !loaded
+            ? <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}>
+                <img src="loading_spinner.gif" style={loaderStyle} />
+            </div>
+
+        :<div style={{ margin: "6px", marginLeft: "20px" }}>
             <h3>Список отделов</h3>
             <div className="d-flex align-items-center">
                 <button className="btn btn-primary" onClick={(e) => EditName(e, currentItem)} style={buttonStyle}>Изменить</button>

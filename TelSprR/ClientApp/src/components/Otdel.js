@@ -9,10 +9,7 @@ function Otdel(props) {
     const [loaded, setLoaded] = useState(false);
     const [listHeight, setListHeight] = useState(window.innerHeight - 150);
 
-    
-
     //console.log("Otdel start", props);
-
 
     useEffect(() => {
         //console.log("Otdel useEffect start");

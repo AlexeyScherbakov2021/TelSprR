@@ -1,6 +1,8 @@
 ﻿import React, { useState, Fragment } from 'react';
 import { DropzoneComponent } from '../DropFile';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from '../../redux/RootReducer'
 //import * as axios from 'axios';
 
 var navigate;
@@ -8,12 +10,17 @@ var fileBody;
 
 const InputFormPerson = (props) => {
 
-    var person = props.person;
+    //const dispatch = useDispatch();
+
+    const location = useLocation();
+    const person = location.state.person;
 
     navigate = useNavigate();
 
+    //console.log("InputFormPerson", person);
+
     const [filePhoto, setFilePhoto] = useState();
-    const [prof, setProf] = useState(person.personalProfId);
+    const [prof, setProf] = useState(person.personalProfId ?? 0);
     const [otdel, setOtdel] = useState(person.personalOtdelId);
     const [disableSave, setDisableSave] = useState(true);
 
@@ -109,23 +116,21 @@ const InputFormPerson = (props) => {
         const data = new FormData();
         data.append("formData", fileBody);
         data.append("person", JSON.stringify(person));
-        //data.append("oldPhoto", oldPhoto);
 
         var xhr = new XMLHttpRequest();
         xhr.open("post", "cards", true);
         xhr.onload = function () {
             if (xhr.status === 200) {
-                //oldPhoto = person.personalPhoto;
-                navigate("/");
+                //<Navigate to="/" replace={true} />
+                navigate('/', { state: { status: "saved" } });
+                props.UpdatePerson(person);
+                //dispatch({ type: 'UPDATE_PERSON', payload: person });
             } else {
                 console.log("error save photo");
             }
 
         };
         xhr.send(data);
-
-
-
     }
     //=========================================================================================
 
@@ -138,6 +143,7 @@ const InputFormPerson = (props) => {
     }
     //=========================================================================================
     function handleChangeProf(event) {
+        console.log("change prof", event.target.value);
         person.personalProfId = event.target.value;
         setProf(event.target.value);
         //person[event.target.id] = event.target.value;
@@ -152,6 +158,13 @@ const InputFormPerson = (props) => {
         setDisableSave(false);
     }
     //=========================================================================================
+    function handleCancel() {
+
+        //return <Navigate to="/" replace={true} />
+        navigate('/');
+    }
+
+
     //=========================================================================================
 
     return (
@@ -189,9 +202,10 @@ const InputFormPerson = (props) => {
                             </div>
                             <h6>Электронная почта</h6>
                             <input id="personalEmail" className="form-control" type="email" defaultValue={props.person.personalEmail} onChange={handleChange} />
-                            <div>
-                                <button className="btn btn-primary d-block w-100" disabled={ disableSave }
-                                    type="submit" style={{ margin: "14px" }}>Сохранить</button>
+                            <div className="d-flex justify-content-around align-items-center mt-3">
+                                <button className="btn btn-primary" disabled={ disableSave }
+                                    type="submit" >Сохранить</button>
+                                <button className="btn btn-secondary" onClick={handleCancel}>Отменить</button>
                             </div>
                         </form>
                     </div>
@@ -199,14 +213,15 @@ const InputFormPerson = (props) => {
             </div>
             <div className="col" style={{ marginTop: "20px" }}>
                 <div className="justify-content-center">
-                    <DropzoneComponent onCallBack={SelectPhoto} filePhoto={filePhoto} fileName={props.person.personalPhoto} />
+                    <DropzoneComponent onCallBack={SelectPhoto} filePhoto={filePhoto} fileName={person.personalPhoto} />
                 </div>
                 <div style={{ margin: "10px" }}>
                     <input id="myID" className="d-none invisible" type="file" accept="image/" required onChange={BrowsePhoto} />
                     <label className="form-label btn btn-primary" htmlFor="myID" style={{ marginBottom: "0px" }}>
                         Обзор...
                     </label>
-                    <button className="btn btn-secondary" style={{ marginLeft: "10px" }} onClick={DeletePhoto} type="button">Удалить</button>
+                    <button className="btn btn-secondary" style={{ marginLeft: "10px" }} onClick={DeletePhoto}
+                        type="button">Удалить</button>
                 </div>
 
             </div>
@@ -215,4 +230,4 @@ const InputFormPerson = (props) => {
 
 }
 
-export default InputFormPerson;
+export default connect(null, mapDispatchToProps)(InputFormPerson);

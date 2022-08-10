@@ -15,8 +15,8 @@ function App(props) {
 
     const [adminEdit, setAdminEdit] = useState(true);
     const [searchText, setSearchText] = useState('');
-    const [curAlpha, setCurAlpha] = useState('');
-    const [curOtdel, setCurOtdel] = useState(-1);
+    //const [curAlpha, setCurAlpha] = useState('');
+    //const [curOtdel, setCurOtdel] = useState(-1);
 
     //-----------------------------------------------------------------------------------------------------------
     function onSetAdmin() {
@@ -24,47 +24,41 @@ function App(props) {
     }
 
     //-----------------------------------------------------------------------------------------------------------
-    function onSetSearch(searchText) {
-        setCurAlpha('');
-        setCurOtdel(-1);
-        setSearchText(searchText);
-    }
+    //function onSetSearch(searchText) {
+    //    setCurAlpha('');
+    //    setCurOtdel(-1);
+    //    setSearchText(searchText);
+    //}
 
     //-----------------------------------------------------------------------------------------------------------
-    function clickOtdel(e) {
-        setCurAlpha('');
-        setCurOtdel(e.target.id);
-        setSearchText('');
-    }
+    //function clickOtdel(e) {
+    //    setCurAlpha('');
+    //    setCurOtdel(e.target.id);
+    //    setSearchText('');
+    //}
 
     //-----------------------------------------------------------------------------------------------------------
-    function clickAlpha(e) {
-        setCurAlpha(e.target.id);
-        setSearchText('');
-    }
+    //function clickAlpha(e) {
+    //    setCurAlpha(e.target.id);
+    //    setSearchText('');
+    //}
 
 
     //console.log("App", props);
 
     return (
         <div>
-            {/*<NavMenu adminEdit={adminEdit} callBackSearch={onSetSearch} />*/}
             <NavMenu />
             <Routes >
                 <Route exact path="/" element={
-
-                  <Main adminEdit={adminEdit} callBackSearch={onSetSearch}
-                      callBackOtdel={clickOtdel} callBackAlpha={clickAlpha}
-                      setOtdel={props.onSelectOtdel} setAlpha={props.onSelectAlpha }
-                      searchText={searchText} curOtdel={curOtdel} curAlpha={curAlpha} />
+                    <Main />
                 } />
 
-                <Route path='/profession' element={<EditProf searchText={searchText} />} />
+                {/*<Route path='/profession' element={<EditProf searchText={searchText} />} />*/}
+                <Route path='/profession' element={<EditProf />} />
                 <Route path='/otdels' element={<EditOtdel searchText={searchText} />} />
-
                 <Route path='/editForm' element={<EditForm />} />
-
-                <Route path="/login" element={<Login callBackAdm={onSetAdmin} />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </div>
 

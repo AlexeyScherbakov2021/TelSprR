@@ -25,7 +25,7 @@ namespace TelSprR.Controllers
         [HttpGet]
         public IEnumerable<Otdel> Get()
         {
-            List<Otdel> list = otdelRepo.Otdel.ToList();
+            List<Otdel> list = otdelRepo.Otdel.OrderBy(o => o.OtdelName).ToList();
 
             List<Otdel> newList = new List<Otdel>();
 
