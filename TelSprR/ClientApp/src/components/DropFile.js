@@ -95,8 +95,8 @@ export class DropzoneComponent extends Component {
 
 
         if (this.props.filePhoto != null) {
-            //this.urlFile = URL.createObjectURL(this.props.filePhoto);
-            this.urlFile = this.props.filePhoto;
+            this.urlFile = URL.createObjectURL(this.props.filePhoto);
+            //this.urlFile = this.props.filePhoto;
         }
 
 

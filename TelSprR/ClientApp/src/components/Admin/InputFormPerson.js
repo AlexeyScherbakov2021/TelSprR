@@ -6,7 +6,7 @@ import { mapStateToProps, mapDispatchToProps } from '../../redux/RootReducer'
 //import * as axios from 'axios';
 
 var navigate;
-var fileBody;
+//var fileBody;
 
 const InputFormPerson = (props) => {
 
@@ -65,10 +65,12 @@ const InputFormPerson = (props) => {
 
         if (files.length > 0) {
             person.personalPhoto = files[0].name;
-            setFilePhoto(fileURL);
-            fileBody = files[0];
+            setFilePhoto(files[0]);
+            //fileBody = files[0];
             setDisableSave(false);
         }
+
+        console.log("BrowsePhoto filePhoto", filePhoto);
 
     }
     //=========================================================================================
@@ -76,9 +78,9 @@ const InputFormPerson = (props) => {
 
         person.personalPhoto = file.name
         let fileURL = URL.createObjectURL(file);
-        setFilePhoto(fileURL);
+        setFilePhoto(file);
         //console.log("SelectPhoto", fileURL);
-        fileBody = file;
+        //fileBody = file;
         setDisableSave(false);
     }
     //=========================================================================================
@@ -86,7 +88,7 @@ const InputFormPerson = (props) => {
 
         person.personalPhoto = null;
         setFilePhoto(null);
-        fileBody = null;
+        //fileBody = null;
         setDisableSave(false);
     }
     //=========================================================================================
@@ -114,7 +116,8 @@ const InputFormPerson = (props) => {
         //navigate("/");
 
         const data = new FormData();
-        data.append("formData", fileBody);
+        //data.append("formData", fileBody);
+        data.append("formData", filePhoto);
         data.append("person", JSON.stringify(person));
 
         var xhr = new XMLHttpRequest();
@@ -158,13 +161,15 @@ const InputFormPerson = (props) => {
         setDisableSave(false);
     }
     //=========================================================================================
-    function handleCancel() {
+    function handleCancel(e) {
+        e.preventDefault();
 
+        //console.log("e", e)
         //return <Navigate to="/" replace={true} />
         navigate('/');
     }
 
-
+    console.log("fileBody", filePhoto);
     //=========================================================================================
 
     return (
