@@ -50,7 +50,10 @@ const Card = props => {
     };
 
     var professionStyle = {
-        marginRight: "8px"
+        marginRight: "8px",
+        textDecoration: "underline",
+        color: "blue",
+        cursor: "pointer"
     };
 
     var workPhoneStyle = {
@@ -74,6 +77,7 @@ const Card = props => {
     };
 
     //console.log("Card", props.item);
+
 
     const editor = props.isAdmin
         ? <div className="d-flex flex-column flex-shrink-0 justify-content-evenly ms-auto" style={{ marginLeft: "7px" }}>
@@ -106,8 +110,10 @@ const Card = props => {
 
                             </h5>
                         <h6 className="text-muted mb-2">{props.item.profession}</h6>
-                        <div style={divProfessionStyle}>
-                            <a href={"#"} id={props.item.personalOtdelId} style={professionStyle}>{props.item.routeOtdels}</a>
+                            <div style={divProfessionStyle}>
+                                <a id={props.item.personalOtdelId} style={professionStyle} onClick={() => props.onSelectOtdel(props.item.personalOtdelId)}>
+                                    {props.item.routeOtdels}
+                                </a>
                         </div>
                     </div>
                         <div>
