@@ -12,8 +12,10 @@ const InputFormPerson = (props) => {
 
     //const dispatch = useDispatch();
 
-    const location = useLocation();
-    const person = location.state.person;
+    //const location = useLocation();
+    //const person = location.state.person;
+
+    var person = props.person;
 
     navigate = useNavigate();
 
@@ -96,6 +98,13 @@ const InputFormPerson = (props) => {
 
         event.preventDefault();
 
+        //console.log("person.personalProfId", person.personalProfId);
+        //console.log("props.otdels", props.otdels);
+
+        person.profession = props.prof.find(item => item.profId == person.personalProfId).profName;
+        person.routeOtdels = props.otdels.find(item => item.otdelId == person.personalOtdelId).otdelName;
+        //console.log(person);
+
         //const data = new FormData();
         //data.append("formData", fileBody);
         //data.append("person", JSON.stringify(person));
@@ -146,7 +155,7 @@ const InputFormPerson = (props) => {
     }
     //=========================================================================================
     function handleChangeProf(event) {
-        console.log("change prof", event.target.value);
+        //console.log("change prof", event.target.value);
         person.personalProfId = event.target.value;
         setProf(event.target.value);
         //person[event.target.id] = event.target.value;
@@ -154,7 +163,7 @@ const InputFormPerson = (props) => {
     }
     //=========================================================================================
     function handleChangeOtdel(event) {
-        console.log("change", event.target.value);
+        //console.log("change", event.target.value);
         person.personalOtdelId = event.target.value;
         setOtdel(event.target.value);
         //person[event.target.id] = event.target.value;

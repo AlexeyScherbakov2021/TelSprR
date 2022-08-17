@@ -102,7 +102,7 @@ namespace TelSprR.Controllers
             if(person.PersonalProfId < 1)
                 person.PersonalProfId = null;
 
-            string oldPhoto = personRepo.GetPerson(person.PersonalId).PersonalPhoto;
+            string oldPhoto = person.PersonalId > 0 ? personRepo.GetPerson(person.PersonalId).PersonalPhoto : "";
 
             int listPhotos = personRepo.Personal.Count(it => it.PersonalPhoto == oldPhoto);
 

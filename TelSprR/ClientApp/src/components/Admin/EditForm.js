@@ -54,7 +54,9 @@ const EditForm = props => {
             personalPhoto: "",
             personalProfId: 0,
             personalOtdelId: location.state.otdel,
-            personalDisabled: false
+            personalDisabled: false,
+            profession: "",
+            routeOtdels: ""
         }
     } else {
         person = {
@@ -68,11 +70,11 @@ const EditForm = props => {
             personalPhoto: location.state.person.personalPhoto,
             personalProfId: location.state.person.personalProfId,
             personalOtdelId: location.state.person.personalOtdelId,
-            personalDisabled: location.state.person.personalDisabled
+            personalDisabled: location.state.person.personalDisabled,
+            profession: location.state.person.profession,
+            routeOtdels: location.state.person.routeOtdels
         }
     }
-
-
 
 
     LoadProf();

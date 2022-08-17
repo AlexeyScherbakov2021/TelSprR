@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="ClientApp\Controllers\WeatherForecastController.cs" />
   </ItemGroup>
 
   <ItemGroup>
