@@ -93,6 +93,23 @@ const InputFormPerson = (props) => {
         //fileBody = null;
         setDisableSave(false);
     }
+
+
+    function GetFullNameOtdel(id) {
+        let otdel = props.otdels.find(item => item.otdelId == id);
+        console.log(props.otdels);
+
+        let name = otdel.otdelName;
+
+        while (otdel.otdelParentId != null) {
+            otdel = props.otdels.find(item => item.otdelId == otdel.otdelParentId);
+            name = otdel.otdelName + ' / ' + otdel.otdelName;
+        }
+
+        return name;
+    }
+
+
     //=========================================================================================
     function savePerson(event) {
 
@@ -101,8 +118,11 @@ const InputFormPerson = (props) => {
         //console.log("person.personalProfId", person.personalProfId);
         //console.log("props.otdels", props.otdels);
 
-        person.profession = props.prof.find(item => item.profId == person.personalProfId).profName;
-        person.routeOtdels = props.otdels.find(item => item.otdelId == person.personalOtdelId).otdelName;
+        //person.profession = props.prof.find(item => item.profId == person.personalProfId).profName;
+        //console.log("person.personalOtdelId", person.personalOtdelId);
+
+        //person.routeOtdels = GetFullNameOtdel(person.personalOtdelId);
+        //person.routeOtdels = props.otdels.find(item => item.otdelId == person.personalOtdelId)?.otdelName;
         //console.log(person);
 
         //const data = new FormData();
@@ -114,15 +134,17 @@ const InputFormPerson = (props) => {
         //})
         //    .then(res => {
         //        console.log(res);
-        //        console.log(res.data);                
+        //        console.log(res.data);
         //        if (res.status === 200) {
         //            navigate("/");
-        //        } 
+        //        }
         //    })
         //.catch(error => console.log(error));
 
         //oldPhoto = person.personalPhoto;
         //navigate("/");
+
+        let oldId = person.personalId;
 
         const data = new FormData();
         //data.append("formData", fileBody);
@@ -133,9 +155,11 @@ const InputFormPerson = (props) => {
         xhr.open("post", "cards", true);
         xhr.onload = function () {
             if (xhr.status === 200) {
+                person = JSON.parse(xhr.response);
+                //console.log(person);
                 //<Navigate to="/" replace={true} />
                 navigate('/', { state: { status: "saved" } });
-                props.UpdatePerson(person);
+                props.UpdatePerson(person, oldId);
                 //dispatch({ type: 'UPDATE_PERSON', payload: person });
             } else {
                 console.log("error save photo");
@@ -178,44 +202,53 @@ const InputFormPerson = (props) => {
         navigate('/');
     }
 
-    //console.log("fileBody", filePhoto);
+
+    const styleInput = {
+        background: "#e0e0ef",
+        margin: "18px",
+        boxShadow: "0px 0px 3px 3px #00000040",
+    };
+
+
+    //console.log("person", person);
     //=========================================================================================
 
     return (
 
         <div className="row justify-content-center">
             <div className="col">
-                <div className="card mb-5 ps-5">
+                <div className="card mb-5 ps-5" style={styleInput}>
                     <div className="card-body">
                         <form method="post" onSubmit={savePerson}>
-                            <div className="mb-3">
+                            <div >
                                 {/*<input className="form-control" type="text" defaultValue={this.person.personalId} />*/}
-                                <h6>Фамилия</h6>
+                                <strong>Фамилия</strong>
                                 <input id="personalLastName" className="form-control" type="text" defaultValue={props.person.personalLastName} onChange={handleChange} />
-                                <h6>Имя</h6>
+                                <strong>Имя</strong>
                                 <input id="personalName" className="form-control" type="text" defaultValue={props.person.personalName} onChange={handleChange} />
-                                <h6>Отчество</h6>
+                                <strong>Отчество</strong>
                                 <input id="personalMidName" className="form-control" type="text" defaultValue={props.person.personalMidName} onChange={handleChange} />
-                                <h6>Должность</h6>
+                                <strong>Должность</strong>
                                 {listProfession()}
-                                <h6>Рабочий телефон</h6>
+                                <strong>Рабочий телефон</strong>
                                 <input id="personalTel" className="form-control" type="text" defaultValue={props.person.personalTel} onChange={handleChange} />
-                                <h6>Мобильный телефон</h6>
+                                <strong>Мобильный телефон</strong>
                                 <input id="personalMobil" className="form-control" type="text" defaultValue={props.person.personalMobil} onChange={handleChange} />
-                                <h6>Отдел</h6>
+                                <strong>Отдел</strong>
 
                                 <select className="form-select" value={otdel} onChange={handleChangeOtdel}>
                                     <option key="0" value="0"></option>
                                     {props.otdels.map((data) => listOtdels(data, ""))}
                                 </select>
 
-                                <div className="form-check" style={{ marginTop: "18px" }}>
+                                <strong>Электронная почта</strong>
+                                <input id="personalEmail" className="form-control" type="email" defaultValue={props.person.personalEmail} onChange={handleChange} />
+
+                                <div className="form-check" style={{ marginTop: "14px" }}>
                                     <input id="personalDisabled" className="form-check-input" type="checkbox" defaultChecked={props.person.personalDisabled} onChange={handleChange} />
                                     <label className="form-check-label" htmlFor="formCheck-1" >Отключен</label>
                                 </div>
                             </div>
-                            <h6>Электронная почта</h6>
-                            <input id="personalEmail" className="form-control" type="email" defaultValue={props.person.personalEmail} onChange={handleChange} />
                             <div className="d-flex justify-content-around align-items-center mt-3">
                                 <button className="btn btn-primary" disabled={ disableSave }
                                     type="submit" >Сохранить</button>

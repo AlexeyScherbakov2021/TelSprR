@@ -10,7 +10,7 @@ const initialState = {
     searchText: '',
     searchTextProf: '',
     searchTextOtdel: '',
-    isAdmin: true,
+    isAdmin: false,
     listPerson: undefined,
     loadedCards: false,
     isLoading: false,
@@ -47,7 +47,7 @@ export function mapDispatchToProps(dispatch) {
         NextLoadPerson: () => dispatch({type: 'NEXT_LOAD'}),
         LoadAll: () => dispatch({ type: 'LOAD_ALL' }),
         DeletePerson: (person) => dispatch({ type: 'DELETE_PERSON', payload: person }),
-        UpdatePerson: (person) => dispatch({ type: 'UPDATE_PERSON', payload: person })
+        UpdatePerson: (person, create) => dispatch({ type: 'UPDATE_PERSON', payload: person, kind: create })
     }
 }
 
@@ -187,13 +187,22 @@ export default function rootReducer(state = initialState, action) {
             break;
 
         case 'UPDATE_PERSON':
-            const newListPerson = state.listPerson.map((item) => {
-                if (item.personalId === action.payload.personalId)
-                    return action.payload;
-                return item;
-            });
+            //LoadPerson(action.payload.personalId);
+            //console.log("action.kind", action.kind);
 
-            //console.log("update", newListPerson);
+            let newListPerson;
+
+            if (action.kind == 0) {
+                newListPerson = [action.payload, ...state.listPerson];
+            } else {
+                newListPerson = state.listPerson.map((item) => {
+                    if (item.personalId === action.payload.personalId) {
+                        //console.log("update", action.payload);
+                        return action.payload;
+                    }
+                    return item;
+                });
+            }
 
             state = {
                 ...state,
@@ -206,8 +215,32 @@ export default function rootReducer(state = initialState, action) {
             return state;
     }
 
-
     return state;
+
+
+    //-----------------------------------------------------------------------------------
+    //async function LoadPerson(id) {
+
+    //    console.log(`cards/getperson?id=${id}`);
+    //    const response = await fetch(`cards/getperson?id=${id}`);
+    //    const dataResult = await response.json();
+
+    //    console.log(dataResult);
+
+    //    const newListPerson = state.listPerson.map((item) => {
+    //        if (item.personalId === dataResult.personalId)
+    //            return dataResult;
+    //        return item;
+    //    });
+
+    //    store.dispatch({
+    //        type: 'LOAD_PERSON',
+    //        payload: newListPerson
+    //    });
+
+    //}
+
+
 
     //-----------------------------------------------------------------------------------
 
@@ -234,7 +267,6 @@ export default function rootReducer(state = initialState, action) {
             xhr.send();
         }
     }
-    
 
 
     //-----------------------------------------------------------------------------------

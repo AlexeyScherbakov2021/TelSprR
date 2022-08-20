@@ -13,5 +13,7 @@ namespace TelSprR.Repository
         bool Create(Otdel item);
         bool Edit(Otdel item);
 
+        Otdel GetOtdel(int id);
+
     }
 }

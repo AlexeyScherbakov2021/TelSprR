@@ -77,12 +77,13 @@ export class DropzoneComponent extends Component {
             padding: '10px',
             borderWidth: 2,
             borderRadius: 2,
-            borderColor: '#eeeeee',
+            borderColor: '#bebebe',
             borderStyle: 'dashed',
-            backgroundColor: '#fafafa',
+            backgroundColor: '#f0f0f0',
             color: '#bdbdbd',
             width: "232px",
             height: "300px",
+            boxShadow: "0px 0px 3px 3px #00000040",
             transition: 'border .3s ease-in-out'
         };
 
@@ -122,7 +123,7 @@ export class DropzoneComponent extends Component {
                     >
                         {this.urlFile == null
                             ? <div>Перетащите файл</div>
-                            : <img className="img-thumbnail" src={this.urlFile} />
+                            : <img className="" src={this.urlFile} style={{maxHeight: "280px", maxWidth: "230px" } } />
                         }
                     </div>
                 }

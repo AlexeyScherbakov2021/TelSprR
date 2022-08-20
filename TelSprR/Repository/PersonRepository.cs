@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +19,10 @@ namespace TelSprR.Repository
 
         public Personal GetPerson(int id)
         {
-            return context.Personal.FirstOrDefault(it => it.PersonalId == id);
+            return context.Personal.Include(it => it.PersonalProf)
+                .Include(it => it.PersonalOtdel)
+                .FirstOrDefault(item => item.PersonalId == id);
+            ;
         }
 
 
@@ -43,7 +47,10 @@ namespace TelSprR.Repository
 
         public void EditUser(Personal user)
         {
-            Personal pers = context.Personal.Where(u => u.PersonalId == user.PersonalId).FirstOrDefault();
+            Personal pers = context.Personal.Where(u => u.PersonalId == user.PersonalId)
+                //.Include(it => it.PersonalProf)
+                //.Include(it => it.PersonalOtdel)
+                .FirstOrDefault();
 
             if (pers != null)
             {

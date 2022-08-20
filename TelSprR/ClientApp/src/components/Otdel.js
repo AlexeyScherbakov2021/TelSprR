@@ -7,29 +7,24 @@ function Otdel(props) {
     //const [resize, setResize] = useState(false);
     const [listOtdel, setListOtdel] = useState([]);
     const [loaded, setLoaded] = useState(false);
-    const [listHeight, setListHeight] = useState(window.innerHeight - 150);
+    //const [listHeight, setListHeight] = useState(window.innerHeight - 150);
 
     //console.log("Otdel start", props);
 
     useEffect(() => {
         //console.log("Otdel useEffect start");
-        window.addEventListener('resize', onResize)
+        //window.addEventListener('resize', onResize)
 
         if (!loaded) {
             //console.log("Otdel загрузка");
             LoadOtdelData();
         }
-        return () => {
-            //console.log("Otdel useEffect end");
-            window.removeEventListener('resize', onResize)
-
-        }
-    }, [listHeight, loaded]);
+    }, [loaded]);
 
 
-    function onResize(event, resize) {
-        setListHeight(window.innerHeight - 150);
-    }
+    //function onResize(event, resize) {
+    //    setListHeight(window.innerHeight - 150);
+    //}
 
     //-----------------------------------------------------------------------------------------------
     function funOtdels(data) {
@@ -51,7 +46,7 @@ function Otdel(props) {
                     type="button" style={{ margin: 1 }} >{otdelName}</button>
                 {
                     subOtdel &&
-                    <ul>
+                    <ul id={otdelId}>
                         {subOtdel.map((child, n) => funOtdels(child, n))}
                     </ul>
                 }
@@ -79,8 +74,9 @@ function Otdel(props) {
     }
 
     var ulStyle = {
-        height: listHeight,
-        marginRight: "10px",
+        //height: listHeight,
+        height: "calc(100vh - 120px)",
+        margin: "10px",
         borderStyle: "none",
         //borderColor: "var(--bs-gray-900)",
         boxShadow: "0px 0px 4px var(--bs-gray-700)"
@@ -89,7 +85,10 @@ function Otdel(props) {
 
     var asideStyle = {
         position: "fixed",
-        top: "74px"
+        background: "var(--bs-gray-100)",
+        top: "74px",
+        margin: "-5px 0px 0px -5px",
+        height: "100%"
     };
 
 
@@ -104,7 +103,7 @@ function Otdel(props) {
     return (
         <aside className="col-3 d-none d-md-block col-lg-4" style={asideStyle}>
             <div className="mb-1">
-                <a id="-1" className="btn btn-link fs-5 fw-bold" type="button" style={{ marginTop: "-12px" }}
+                <a id="-1" className="btn btn-link fs-5 fw-bold" type="button" style={{ margin: "-5px" }}
                     onClick={() => props.onSelectOtdel(-1)}>Показать весь список</a>
             </div>
             <ul className="list-group border rounded overflow-auto" style={ulStyle} onClick={clickOtdel}>

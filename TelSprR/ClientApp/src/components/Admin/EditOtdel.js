@@ -6,7 +6,7 @@ function EditOtdel() {
 
     const [listOtdel, setListOtdel] = useState([]);
     const [currentItem, setCurrentItem] = useState(null);
-    const [listHeight, setListHeight] = useState(window.innerHeight - 160);
+    //const [listHeight, setListHeight] = useState(window.innerHeight - 160);
     const [loaded, setLoaded] = useState(false);
 
     const isSubOtdel = useRef();
@@ -15,23 +15,23 @@ function EditOtdel() {
 
     useEffect(() => {
         //console.log("useEffect start");
-        window.addEventListener('resize', onResize)
+        //window.addEventListener('resize', onResize)
 
         if (!loaded) {
             LoadOtdelData();
         }
 
-        return () => {
-            //console.log("useEffect end");
-            window.removeEventListener('resize', onResize)
-        }
-    }, [listHeight, loaded, listOtdel]);
+    //    return () => {
+    //        //console.log("useEffect end");
+    //        window.removeEventListener('resize', onResize)
+    //    }
+    }, [loaded, listOtdel]);
 
 
     //-----------------------------------------------------------------------------------------------
-    function onResize() {
-        setListHeight(window.innerHeight - 160);
-    }
+    //function onResize() {
+    //    setListHeight(window.innerHeight - 160);
+    //}
 
     //-----------------------------------------------------------------------------------------------
 
@@ -233,7 +233,9 @@ function EditOtdel() {
         margin: "5px"
     };
     const listStyle = {
-        height: listHeight
+        //height: listHeight
+        height: "calc(100vh - 170px)",
+        boxShadow: "0px 0px 3px 3px #00000040",
     };
 
     const loaderStyle = {
@@ -250,7 +252,7 @@ function EditOtdel() {
                 <img src="loading_spinner.gif" style={loaderStyle} />
             </div>
 
-        :<div style={{ margin: "6px", marginLeft: "20px" }}>
+        :<div style={{ margin: "0 20px" }}>
             <h3>Список отделов</h3>
             <div className="d-flex align-items-center">
                 <button className="btn btn-primary" onClick={(e) => EditName(e, currentItem)} style={buttonStyle}>Изменить</button>

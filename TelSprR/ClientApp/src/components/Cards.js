@@ -46,8 +46,8 @@ function Cards(props) {
     const loaderStyle = {
         display: "inline-block",
         position: "relative",
-        width: "100px",
-        height: "100px",
+        //width: "150px",
+        //height: "150px",
         textAlign: "center"
     };
 

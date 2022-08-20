@@ -34,10 +34,10 @@ function NavMenu(props) {
     let admButton = props.isAdmin
         ? <ul className="navbar-nav ms-auto">
             <NavItem>
-                <NavLink tag={Link} to="/otdels">Отделы</NavLink>
+                <NavLink className="text-white" tag={Link} to="/otdels">Отделы</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink tag={Link} to="/profession">Должности</NavLink>
+                <NavLink className="text-white" tag={Link} to="/profession">Должности</NavLink>
             </NavItem>
         </ul>
         : null;

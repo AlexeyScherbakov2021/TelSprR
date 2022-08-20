@@ -10,11 +10,18 @@ const Login = props => {
 
     //console.log("disp", disp);
 
-    function loginHandler(e, callBack, navigate) {
+    async function  loginHandler(e, callBack, navigate) {
         e.preventDefault();
         const form = e.target;
         const login = form.login.value;
         const pass = form.pass.value;
+
+
+        const response = await fetch('cards/check?login=login&pass=password');
+        const dataResult = await response.json();
+
+        return;
+
 
         if (login === "admin" && pass === "55555") {
             props.setAdmin();

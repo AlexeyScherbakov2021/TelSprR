@@ -21,11 +21,11 @@ const Card = props => {
     var cardStyle = {
         //background: "#effeff",
         borderRadius: "6px",
-        boxShadow: "0px 0px 3px 1px var(--bs-secondary),inset 0px 0px 10px 0px rgb(123,186,249)",
+        boxShadow: "0px 0px 3px 1px #00000040,inset 0px 0px 10px 0px #00000030",
         marginBottom: "13px",
         //border: "2px solid rgb(82,168,255)",
         border: "1px solid var(--bs-gray-600)",
-        background: "linear-gradient(-50deg, #adcedb, #f8ffff), rgb(232,253,255)",
+        background: "linear-gradient(-50deg, #d2dfff, #ffffff), rgb(255,255,255)",
 
         marginRight: "8px"
     };
@@ -36,8 +36,8 @@ const Card = props => {
 
     var photoStyle = {
         marginRight: "12px",
-        //maxHeight: "100px",
-        width: "130px"
+        maxHeight: "140px",
+        maxWidth: "130px"
     };
 
     var nameStyle = {
@@ -96,7 +96,9 @@ const Card = props => {
         <div className="col-md-12 col-xxl-10" style={divCardStyle}>
             <div className="card d-flex" id={props.item.personalId} style={cardStyle}>
                 <div className="card-body d-flex align-items-center" style={cardBodyStyle}>
-                    <img className="float-start" src={"./photo/" + props.item.personalPhoto} style={photoStyle} />
+                    <div style={{ width: "130px" }} className="d-flex align-items-center justify-content-center" >
+                        <img className="float-start" src={"./photo/" + props.item.personalPhoto} style={photoStyle} />
+                    </div>
                     <div>
                         <div>
                         <h5 className="fw-bold" style={nameStyle}>{props.item.personalLastName + ' ' + props.item.personalName + ' ' +

@@ -15,6 +15,13 @@ namespace TelSprR.Repository
         public IQueryable<Otdel> Otdel => context.Otdel;
 
 
+
+        public Otdel GetOtdel(int id)
+        {
+            return Otdel.FirstOrDefault(item => item.OtdelId == id);
+        }
+
+
         //--------------------------------------------------------------------------------------------------
         public bool Create(Otdel item)
         {

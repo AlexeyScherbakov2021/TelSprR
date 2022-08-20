@@ -35,10 +35,18 @@ function Alpha(props) {
     }
 
     var alphaStyle = {
-        paddingBottom: "6px",
         marginTop: "0px",
-        background: "var(--bs-gray-100)",
+        marginLeft: "8px",
+        marginRight: "-8px",
+        borderRadius: "6px",
+        //border: "1px solid var(--bs-gray-600)",
+        //background: "var(--bs-gray-100)",
+        boxShadow: "2px 0px 9px 1px #00000090",
+        background: "#a0b0dd",
+        //background: "#a0a0b0",
         paddingTop: "5px",
+        paddingLeft: "5px",
+        paddingBottom: "5px",
         position: "sticky",
         top: "60px",
         zIndex: "1010"

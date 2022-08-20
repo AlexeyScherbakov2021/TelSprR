@@ -13,12 +13,12 @@ using TelSprR.Repository;
 
 namespace TelSprR.Controllers
 {
-    public class TodoItem
-    {
-        public long Id { get; set; }
-        public string? Name { get; set; }
-        public bool IsComplete { get; set; }
-    }
+    //public class TodoItem
+    //{
+    //    public long Id { get; set; }
+    //    public string? Name { get; set; }
+    //    public bool IsComplete { get; set; }
+    //}
 
 
     [ApiController]
@@ -32,6 +32,22 @@ namespace TelSprR.Controllers
         {
             personRepo = repo;
             otdelRepo = repoOtdel;
+        }
+
+        [HttpGet]
+        [Route("Check")]
+        public IActionResult Check(string Login, string Pass)
+        {
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetPerson")]
+        public Personal GetPerson(int id)
+        {
+            Personal person = personRepo.GetPerson(id);
+            return person;
         }
 
         //---------------------------------------------------------------------------
@@ -58,6 +74,7 @@ namespace TelSprR.Controllers
 
             return NotFound();
         }
+
 
         //--------------------------------------------------------------------------------------------------
         //[HttpPost]
@@ -92,7 +109,7 @@ namespace TelSprR.Controllers
 
         //--------------------------------------------------------------------------------------------------
         [HttpPost]
-        public IActionResult Post(IFormCollection formData)
+        public Card Post(IFormCollection formData)
         {
             Personal person = JsonConvert.DeserializeObject<Personal>(formData["person"]);
 
@@ -155,7 +172,10 @@ namespace TelSprR.Controllers
 
             }
 
-            return Ok();
+            person = personRepo.GetPerson(person.PersonalId);
+
+            return BuildCard(person);
+            //return Ok();
         }
 
 
@@ -375,14 +395,10 @@ namespace TelSprR.Controllers
 
             return true;
         }
-
         //---------------------------------------------------------------------------------------------------        
         //---------------------------------------------------------------------------------------------------        
-        private IEnumerable<Card> BuildCards(List<Personal> listPersonal)
+        private Card BuildCard(Personal p)
         {
-            List<Card> cards = new List<Card>();
-            foreach(Personal p in listPersonal)
-            {
                 Card card = new Card
                 {
                     PersonalId = p.PersonalId,
@@ -401,12 +417,63 @@ namespace TelSprR.Controllers
                 card.Profession = p.PersonalProf?.ProfName;
                 card.RouteOtdels = p.PersonalOtdel?.OtdelName;
 
-                Otdel parentOtdel = p.PersonalOtdel?.OtdelParent;
-                while (parentOtdel != null)
+                Otdel parentOtdel;
+                int? parentOtdelId = p.PersonalOtdel?.OtdelParentId;
+                while (parentOtdelId != null)
                 {
-                    card.RouteOtdels = parentOtdel.OtdelName + " / " +  card.RouteOtdels;
-                    parentOtdel = parentOtdel.OtdelParent;
+                    parentOtdel = otdelRepo.GetOtdel(parentOtdelId.Value);
+                    card.RouteOtdels = parentOtdel.OtdelName + " / " + card.RouteOtdels;
+                    parentOtdelId = parentOtdel.OtdelParentId;
+
                 }
+
+            return card;
+        }
+
+
+        //---------------------------------------------------------------------------------------------------        
+        //---------------------------------------------------------------------------------------------------        
+        private IEnumerable<Card> BuildCards(List<Personal> listPersonal)
+        {
+            List<Card> cards = new List<Card>();
+            foreach(Personal p in listPersonal)
+            {
+                Card card = BuildCard(p);
+
+                //Card card = new Card
+                //{
+                //    PersonalId = p.PersonalId,
+                //    PersonalName = p.PersonalName,
+                //    PersonalLastName = p.PersonalLastName,
+                //    PersonalMidName = p.PersonalMidName,
+                //    PersonalEmail = p.PersonalEmail,
+                //    PersonalTel = p.PersonalTel,
+                //    PersonalMobil = p.PersonalMobil,
+                //    PersonalPhoto = p.PersonalPhoto,
+                //    PersonalDisabled = p.PersonalDisabled,
+                //    PersonalProfId = p.PersonalProfId,
+                //    PersonalOtdelId = p.PersonalOtdelId
+                //};
+
+                //card.Profession = p.PersonalProf?.ProfName;
+                //card.RouteOtdels = p.PersonalOtdel?.OtdelName;
+
+                //Otdel parentOtdel;
+                //int? parentOtdelId = p.PersonalOtdel.OtdelParentId;
+                //while(parentOtdelId != null)
+                //{
+                //    parentOtdel = otdelRepo.GetOtdel(parentOtdelId.Value);
+                //    card.RouteOtdels = parentOtdel.OtdelName + " / " + card.RouteOtdels;
+                //    parentOtdelId = parentOtdel.OtdelParentId;
+
+                //}
+
+                ////Otdel parentOtdel = p.PersonalOtdel?.OtdelParent;
+                ////while (parentOtdel != null)
+                ////{
+                ////    card.RouteOtdels = parentOtdel.OtdelName + " / " +  card.RouteOtdels;
+                ////    parentOtdel = parentOtdel.OtdelParent;
+                ////}
                 cards.Add(card );
 
             }
