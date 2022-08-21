@@ -17,10 +17,10 @@ const Login = props => {
         const pass = form.pass.value;
 
 
-        const response = await fetch('cards/check?login=login&pass=password');
-        const dataResult = await response.json();
+        //const response = await fetch('cards/check?login=login&pass=password');
+        //const dataResult = await response.json();
 
-        return;
+        //return;
 
 
         if (login === "admin" && pass === "55555") {

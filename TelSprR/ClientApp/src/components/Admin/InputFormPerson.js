@@ -171,6 +171,8 @@ const InputFormPerson = (props) => {
     //=========================================================================================
 
     function handleChange(event) {
+        event.preventDefault();
+
         //console.log("change", event.target.id, event.target.value);
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
 
