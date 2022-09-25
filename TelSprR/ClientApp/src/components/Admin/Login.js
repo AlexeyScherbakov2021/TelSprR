@@ -43,8 +43,7 @@ const Login = props => {
                     <input id="login"
                     />
                     <label htmlFor="pass">Пароль</label>
-                    <input id="pass"
-                    />
+                    <input id="pass" type="password" required />
                     <button
                         type="success"
                        
