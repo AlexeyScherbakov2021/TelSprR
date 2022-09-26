@@ -25,7 +25,7 @@ const Card = props => {
         marginBottom: "13px",
         //border: "2px solid rgb(82,168,255)",
         border: "1px solid var(--bs-gray-600)",
-        background: "linear-gradient(-50deg, #d2dfff, #ffffff), rgb(255,255,255)",
+        background: "linear-gradient(-50deg, #d4e4ff, #ffffff), rgb(255,255,255)",
 
         marginRight: "8px"
     };
@@ -96,7 +96,7 @@ const Card = props => {
         <div className="col-md-12 col-xxl-10" style={divCardStyle}>
             <div className="card d-flex" id={props.item.personalId} style={cardStyle}>
                 <div className="card-body d-flex align-items-center" style={cardBodyStyle}>
-                    <div style={{ width: "130px" }} className="d-flex align-items-center justify-content-center" >
+                    <div style={{ width: "130px", marginLeft: "4px" }} className="d-flex align-items-center justify-content-center" >
                         <img className="float-start" src={"./photo/" + props.item.personalPhoto} style={photoStyle} />
                     </div>
                     <div>

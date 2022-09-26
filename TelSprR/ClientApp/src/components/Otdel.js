@@ -32,6 +32,7 @@ function Otdel(props) {
 
         const listITemStyle = {
             //background: "#eff8ff",
+            //height: "40px",
             padding: 0
         };
 

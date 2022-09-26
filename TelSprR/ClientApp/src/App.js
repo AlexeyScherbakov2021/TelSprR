@@ -50,9 +50,9 @@ function App(props) {
         <div>
             <NavMenu />
             <Routes >
-                <Route exact path="/" element={
-                    <Main />
-                } />
+
+                <Route exact path="/" element={ <Main /> } />
+                <Route exact path="/phone" element={ <Main /> } />
 
                 {/*<Route path='/profession' element={<EditProf searchText={searchText} />} />*/}
                 <Route path='/profession' element={<EditProf />} />
