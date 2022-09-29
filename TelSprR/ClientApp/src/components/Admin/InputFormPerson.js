@@ -171,13 +171,17 @@ const InputFormPerson = (props) => {
     //=========================================================================================
 
     function handleChange(event) {
-        event.preventDefault();
+        //event.preventDefault();
 
         //console.log("change", event.target.id, event.target.value);
         const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+        //console.log("value", value);
 
         person[event.target.id] = value;
+
         setDisableSave(false);
+
+        //console.log("handleChange", person);
     }
     //=========================================================================================
     function handleChangeProf(event) {
@@ -248,7 +252,7 @@ const InputFormPerson = (props) => {
 
                                 <div className="form-check" style={{ marginTop: "14px" }}>
                                     <input id="personalDisabled" className="form-check-input" type="checkbox" defaultChecked={props.person.personalDisabled} onChange={handleChange} />
-                                    <label className="form-check-label" htmlFor="formCheck-1" >Отключен</label>
+                                    <label className="form-check-label" htmlFor="personalDisabled" >Отключен</label>
                                 </div>
                             </div>
                             <div className="d-flex justify-content-around align-items-center mt-3">

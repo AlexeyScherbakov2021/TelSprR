@@ -27,6 +27,7 @@ function Cards(props) {
     //-----------------------------------------------------------------------------------
     function onScrollList(nextPageCallback) {
 
+        //console.log("onScrollList");
 
         const height = document.body.clientHeight;
         const screenHeight = window.innerHeight;
@@ -35,8 +36,15 @@ function Cards(props) {
         const threshold = height - screenHeight / 4;
         const position = scrolled + screenHeight;
 
+        //console.log("document height =", height);
+        //console.log("screenHeight =", screenHeight);
+        //console.log("window.scrollY =", scrolled);
+        //console.log("threshold =", threshold);
+        //console.log("position =", position);
+
         if (position >= threshold) {
 
+            //console.log("nextPageCallback");
             nextPageCallback();
 
         }

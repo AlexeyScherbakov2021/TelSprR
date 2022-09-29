@@ -62,9 +62,9 @@ namespace TelSprR.Repository
                 pers.PersonalName = user.PersonalName;
                 pers.PersonalTel = user.PersonalTel;
                 pers.PersonalOtdelId = user.PersonalOtdelId;
-                pers.PersonalOtdel = user.PersonalOtdel;
+                //pers.PersonalOtdel = user.PersonalOtdel;
                 pers.PersonalProfId = user.PersonalProfId;
-                pers.PersonalProf = user.PersonalProf;
+                //pers.PersonalProf = user.PersonalProf;
                 pers.PersonalPhoto = user.PersonalPhoto;
 
                 context.SaveChanges();

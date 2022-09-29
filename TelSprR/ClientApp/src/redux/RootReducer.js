@@ -2,7 +2,7 @@
 import { createStore } from 'redux';
 
 
-const cardsPerPage = 5;
+const cardsPerPage = 6;
 
 const initialState = {
     selectedOtdel: -1,
@@ -164,6 +164,8 @@ export default function rootReducer(state = initialState, action) {
 
         case 'NEXT_LOAD':
             if (!state.isLoading && !state.isLoadingAll) {
+
+                //console.log("Подгрузка");
                 state = {
                     ...state,
                     currentPage: state.currentPage + 1,
