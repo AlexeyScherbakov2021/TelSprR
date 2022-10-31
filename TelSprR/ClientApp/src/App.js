@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Main from './components/Main';
 import EditOtdel from './components/Admin/EditOtdel';
@@ -52,7 +52,7 @@ function App(props) {
             <Routes >
 
                 <Route exact path="/" element={ <Main /> } />
-                <Route exact path="/phone" element={ <Main /> } />
+                <Route exact path="/phone" element={ <Navigate to="/" /> } />
 
                 {/*<Route path='/profession' element={<EditProf searchText={searchText} />} />*/}
                 <Route path='/profession' element={<EditProf />} />
@@ -61,9 +61,6 @@ function App(props) {
                 <Route path="/login" element={<Login />} />
             </Routes>
         </div>
-
-
-
         );
 
 }
