@@ -15,7 +15,8 @@ const initialState = {
     loadedCards: false,
     isLoading: false,
     isLoadingAll: false,
-    currentPage: 1
+    currentPage: 1,
+    listAllPerson: undefined
 
 };
 
@@ -33,7 +34,8 @@ export function mapStateToProps(state) {
         loadedCards: state.loadedCards,
         isLoading: state.isLoading,
         isLoadingAll: state.isLoadingAll,
-        currentPage: state.currentPage
+        currentPage: state.currentPage,
+        listAllPerson: state.listAllPerson
     }
 }
 
@@ -47,7 +49,8 @@ export function mapDispatchToProps(dispatch) {
         NextLoadPerson: () => dispatch({type: 'NEXT_LOAD'}),
         LoadAll: () => dispatch({ type: 'LOAD_ALL' }),
         DeletePerson: (person) => dispatch({ type: 'DELETE_PERSON', payload: person }),
-        UpdatePerson: (person, create) => dispatch({ type: 'UPDATE_PERSON', payload: person, kind: create })
+        UpdatePerson: (person, create) => dispatch({ type: 'UPDATE_PERSON', payload: person, kind: create }),
+        LoadAllPerson: () => dispatch({type: 'LOAD_ALL_PERSON'})
     }
 }
 
@@ -213,6 +216,12 @@ export default function rootReducer(state = initialState, action) {
             break;
 
 
+        case 'LOAD_ALL_PERSON':
+            //console.log("LOAD_ALL_PERSON");
+            LoadCSVData();
+            break;
+
+
         default:
             return state;
     }
@@ -301,4 +310,77 @@ export default function rootReducer(state = initialState, action) {
 
 
     }
+
+
+    async function LoadCSVData() {
+
+        let url = state.isAdmin ? "cards/admin" : "cards";
+
+        const response = await fetch(url + '?otdel=' + state.selectedOtdel + '&alpha=' + state.selectedAlpha + '&search=' + state.searchText +
+            '&page=' + state.currentPage + '&CardsPerPage=' + 500);
+        const dataResult = await response.json();
+
+
+        var line = "ФИО;Раб.телефон;Моб.телефон;Должность;Отдел;Эл.почта\n";
+
+        var res = line;
+
+        var res = line + dataResult.map((item) => {
+            return item.personalLastName
+            + " " + item.personalName
+                + " " + item.personalMidName
+                + ";" + item.personalTel
+                + ";" + item.personalMobil
+                + ";" + item.profession
+                + ";" + item.routeOtdels
+                + ";" + item.personalEmail;
+        }).join("\n");
+
+        var res1 = utf8_decode(res);
+
+        //console.log("LoadCSVData", res1);
+
+        var data = new Blob([res1], {
+            type: 'image/png'
+        }),
+            csvURL = window.URL.createObjectURL(data),
+            tempLink = document.createElement('a');
+
+        console.log("LoadCSVData", data);
+
+
+        tempLink.href = csvURL;
+        tempLink.setAttribute('download', 'Telephone.csv');
+        tempLink.click();
+
+    }
+
+
+    function utf8_decode(aa) {
+        var bb = '', c = 0;
+
+        var array = new Uint8Array(aa.length);
+
+        for (var i = 0; i < aa.length; i++) {
+            c = aa.charCodeAt(i);
+            if (c > 127) {
+                if (c > 1024) {
+                    if (c == 1025) {
+                        c = 1016;
+                    } else if (c == 1105) {
+                        c = 1032;
+                    }
+                    bb += String.fromCharCode(c - 848);
+                    c = c - 848;
+                }
+            } else {
+                bb += aa.charAt(i);
+            }
+            array[i] = c;
+        }
+
+        return array;
+    }
+
+
 }

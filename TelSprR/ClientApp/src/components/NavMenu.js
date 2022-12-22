@@ -29,19 +29,39 @@ function NavMenu(props) {
         props.onSearch(refSearch.current.value, location.pathname);
         refSearch.current.value = '';
     }
+
+    //-----------------------------------------------------------------------------------------------------------
+    function clickCSV(e) {
+        //console.log("Экспорт файла");
+
+        props.LoadAllPerson();
+
+    //    var res = "0;test0\n1;test1\n2;test2";
+
+    //    var data = new Blob([res], {
+    //        type: 'text/csv'
+    //    }),
+    //        csvURL = window.URL.createObjectURL(data),
+    //        tempLink = document.createElement('a');
+    //    tempLink.href = csvURL;
+    //    tempLink.setAttribute('download', 'myCSVFile.csv');
+    //    tempLink.click();
+    }
+
     //-----------------------------------------------------------------------------------
 
     let admButton = props.isAdmin
-        ? <ul className="navbar-nav ms-auto">
-            <NavItem>
+        //? <ul className="navbar-nav ms-auto">
+        ? <>
+        <NavItem>
                 <NavLink className="text-white" tag={Link} to="/otdels">Отделы</NavLink>
-            </NavItem>
-            <NavItem>
+        </NavItem>
+        
+        <NavItem>
                 <NavLink className="text-white" tag={Link} to="/profession">Должности</NavLink>
-            </NavItem>
-        </ul>
+        </NavItem>
+        </>
         : null;
-
 
 
     return (
@@ -52,7 +72,12 @@ function NavMenu(props) {
                 <NavbarBrand className="" tag={Link} to="/">Телефонный справочник</NavbarBrand>
                 <NavbarToggler onClick={toggleNavbar} />
                 <Collapse className="navbar-collapse" isOpen={!collapsed} navbar>
-                    {admButton}
+                    <ul className="navbar-nav ms-auto">
+                        {admButton}
+                        <NavItem>
+                            <div className="text-white-50 btn fs-5" onClick={clickCSV}>В файл</div>
+                        </NavItem>
+                    </ul>
                     <input className="ms-auto" type="search" ref={refSearch} placeholder="Поиск..."
                     onKeyPress={event => {
                         if (event.key === 'Enter') {

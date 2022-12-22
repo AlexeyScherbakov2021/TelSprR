@@ -17,14 +17,18 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Compile Remove="ClientApp\src\components\Новая папка\**" />
+    <Compile Remove="ClientApp\src\Новая папка1\**" />
     <Compile Remove="ClientApp\src\Новая папка\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\src\components\Новая папка\**" />
+    <Content Remove="ClientApp\src\Новая папка1\**" />
     <Content Remove="ClientApp\src\Новая папка\**" />
     <EmbeddedResource Remove="ClientApp\src\components\Новая папка\**" />
+    <EmbeddedResource Remove="ClientApp\src\Новая папка1\**" />
     <EmbeddedResource Remove="ClientApp\src\Новая папка\**" />
     <None Remove="$(SpaRoot)**" />
     <None Remove="ClientApp\src\components\Новая папка\**" />
+    <None Remove="ClientApp\src\Новая папка1\**" />
     <None Remove="ClientApp\src\Новая папка\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
@@ -34,16 +38,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\Controllers\WeatherForecastController.cs" />
     <None Remove="ClientApp\src\components\Admin\EditFormFunc.js" />
     <None Remove="ClientApp\src\components\Cards.css" />
     <None Remove="ClientApp\src\components\EditForm.js" />
     <None Remove="ClientApp\src\components\EditProf.js" />
     <None Remove="ClientApp\src\components\Layout.js" />
     <None Remove="ClientApp\src\redux\action.js" />
+    <None Remove="ClientApp\src\registerServiceWorker.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\Новая папка1\" />
     <Folder Include="Models\" />
   </ItemGroup>
 
