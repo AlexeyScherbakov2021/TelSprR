@@ -24,6 +24,35 @@ function Cards(props) {
 
     }, [nextPageCallback]);
 
+
+    useEffect(() => {
+        window.addEventListener('resize', onResize );
+
+        return () => {
+            window.removeEventListener('resize', onResize );
+        };
+
+    }, );
+
+    //-----------------------------------------------------------------------------------
+    function onResize() {
+
+        var cnt = props.cardsPerPage2;
+        //console.log("количество0:" + cnt);
+
+        props.calcCardsPerPage(Math.round(6 * window.innerHeight / 970));
+
+        //console.log("количество:" + cnt);
+        //console.log("cardsPerPage2:" + props.cardsPerPage2);
+
+        if (cnt > props.cardsPerPage2) {
+            nextPageCallback();
+        }
+
+    }
+        
+
+
     //-----------------------------------------------------------------------------------
     function onScrollList(nextPageCallback) {
 
@@ -36,10 +65,10 @@ function Cards(props) {
         const threshold = height - screenHeight / 4;
         const position = scrolled + screenHeight;
 
-        //console.log("document height =", height);
-        //console.log("screenHeight =", screenHeight);
-        //console.log("window.scrollY =", scrolled);
-        //console.log("threshold =", threshold);
+        //console.log("document height =", document.body.clientHeight);
+        //console.log("screenHeight =", window.innerHeight);
+        //console.log("window.scrollY =", window.scrollY);
+        //console.log("количество =", Math.ceil(6 * window.innerHeight / 970));
         //console.log("position =", position);
 
         if (position >= threshold) {

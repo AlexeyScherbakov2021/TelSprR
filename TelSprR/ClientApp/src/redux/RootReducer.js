@@ -2,7 +2,7 @@
 import { createStore } from 'redux';
 
 
-const cardsPerPage = 6;
+//const cardsPerPage = 6;
 
 const initialState = {
     selectedOtdel: -1,
@@ -16,7 +16,8 @@ const initialState = {
     isLoading: false,
     isLoadingAll: false,
     currentPage: 1,
-    listAllPerson: undefined
+    listAllPerson: undefined,
+    cardsPerPage2: 6
 
 };
 
@@ -35,7 +36,8 @@ export function mapStateToProps(state) {
         isLoading: state.isLoading,
         isLoadingAll: state.isLoadingAll,
         currentPage: state.currentPage,
-        listAllPerson: state.listAllPerson
+        listAllPerson: state.listAllPerson,
+        cardsPerPage2: state.cardsPerPage2
     }
 }
 
@@ -50,7 +52,8 @@ export function mapDispatchToProps(dispatch) {
         LoadAll: () => dispatch({ type: 'LOAD_ALL' }),
         DeletePerson: (person) => dispatch({ type: 'DELETE_PERSON', payload: person }),
         UpdatePerson: (person, create) => dispatch({ type: 'UPDATE_PERSON', payload: person, kind: create }),
-        LoadAllPerson: () => dispatch({type: 'LOAD_ALL_PERSON'})
+        LoadAllPerson: () => dispatch({ type: 'LOAD_ALL_PERSON' }),
+        calcCardsPerPage: (cnt_cards) => dispatch({ type: 'CARDS_PER_PAGE', payload: cnt_cards })
     }
 }
 
@@ -58,6 +61,7 @@ export function mapDispatchToProps(dispatch) {
 export default function rootReducer(state = initialState, action) {
 
     if (state.listPerson === undefined) {
+
         state = {
             selectedOtdel: -1,
             selectedAlpha: '',
@@ -69,7 +73,8 @@ export default function rootReducer(state = initialState, action) {
             loadedCards: false,
             isLoading: false,
             isLoadingAll: false,
-            currentPage: 1
+            currentPage: 1,
+            cardsPerPage2: Math.round(6 * window.innerHeight / 970)
         }
 
         LoadCardData();
@@ -78,6 +83,14 @@ export default function rootReducer(state = initialState, action) {
 
 
     switch (action.type) {
+
+        case 'CARDS_PER_PAGE':
+            state = {
+                ...state,
+                cardsPerPage2: action.payload
+            }
+            break;
+
 
         case 'SELECT_OTDEL':
             state = {
@@ -167,8 +180,6 @@ export default function rootReducer(state = initialState, action) {
 
         case 'NEXT_LOAD':
             if (!state.isLoading && !state.isLoadingAll) {
-
-                //console.log("Подгрузка");
                 state = {
                     ...state,
                     currentPage: state.currentPage + 1,
@@ -252,6 +263,21 @@ export default function rootReducer(state = initialState, action) {
     //}
 
 
+    //function LoadNextPart() {
+    //    if (!state.isLoading && !state.isLoadingAll) {
+    //        console.log("currentPage ", state.currentPage);
+    //        console.log("Подгрузка ", state.cardsPerPage2);
+    //        state = {
+    //            ...state,
+    //            currentPage: state.currentPage + 1,
+    //            loadedCards: true,
+    //            isLoading: true
+    //        }
+    //        LoadCardData();
+    //    }
+    //}
+
+
 
     //-----------------------------------------------------------------------------------
 
@@ -286,10 +312,10 @@ export default function rootReducer(state = initialState, action) {
         let url = state.isAdmin ? "cards/admin" : "cards";
 
         const response = await fetch(url + '?otdel=' + state.selectedOtdel + '&alpha=' + state.selectedAlpha + '&search=' + state.searchText +
-            '&page=' + state.currentPage + '&CardsPerPage=' + cardsPerPage);
+            '&page=' + state.currentPage + '&CardsPerPage=' + state.cardsPerPage2);
         const dataResult = await response.json();
 
-        if (dataResult.length < cardsPerPage) {
+        if (dataResult.length < state.cardsPerPage2) {
             store.dispatch({ type: 'LOAD_ALL' });
         }
 
